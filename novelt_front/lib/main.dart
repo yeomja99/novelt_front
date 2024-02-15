@@ -1,6 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:novelt_front/screens/InputPrompt.dart';
+import 'package:novelt_front/screens/Edit.dart';
+import 'package:novelt_front/screens/SaveandGeneration.dart';
+import 'package:novelt_front/screens/SelectScene.dart';
+import 'package:novelt_front/screens/ShareShorts.dart';
 import 'package:novelt_front/screens/SignUpEmail.dart';
 import 'package:novelt_front/screens/SignUpName.dart';
 import 'package:novelt_front/screens/SignUpPW.dart';
@@ -17,7 +21,7 @@ class App extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
-      home: InputPrompt(),
+      home: ShareShorts(),
     );
   }
 }
