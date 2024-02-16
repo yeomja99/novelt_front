@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/SaveandGeneration.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import 'Edit.dart';
 
 class SelectScene extends StatefulWidget {
   @override
@@ -90,7 +93,6 @@ class _SelectSceneState extends State<SelectScene>
               height: 10,
             ),
             Expanded(child: ImagesGridPageView()),
-
             SizedBox(
               height: 10,
             ),
@@ -109,27 +111,41 @@ class ImagesGridPageView extends StatefulWidget {
 
 class _ImagesGridPageViewState extends State<ImagesGridPageView> {
   final PageController controller = PageController();
-  int _currentPageIndex = 0; // 현재 페이지 인덱스
+  int _currentPageIndex = 0;
 
-  // 각 페이지에 대한 GridView 생성
-  List<Widget> pages = List.generate(
-    6,
-        (index) => GridView.count(
-      crossAxisCount: 2, // 2x2 그리드
-      // mainAxisSpacing: 10,
-      // crossAxisSpacing: 10,
-      padding: EdgeInsets.all(10),
-      children: List.generate(4, (index) => Container(
+  List<Widget> generateGridTiles() {
+    return List.generate(4, (index) {
+      // 이미지 경로는 배열 또는 다른 방식으로 관리하면 더 좋습니다.
+      String imagePath = 'images/testimg.png';
+
+      return GestureDetector(
+        onTap: () {
+          // 여기서 context를 사용할 수 있습니다.
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Edit(),
+          ));
+        },
         child: Image.asset(
-          'images/testimg.png', // 실제 이미지 경로로 변경 필요
+          imagePath,
           fit: BoxFit.cover,
         ),
-      )),
-    ),
-  );
+      );
+    });
+  }
+
+  List<Widget> generatePages() {
+    return List.generate(6, (index) {
+      return GridView.count(
+        crossAxisCount: 2,
+        padding: EdgeInsets.all(10),
+        children: generateGridTiles(),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> pages = generatePages();
     return Column(
       children: [
         Expanded(
@@ -160,7 +176,9 @@ class _ImagesGridPageViewState extends State<ImagesGridPageView> {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                // 버튼 클릭 시 실행할 동작
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => SaveandGeneration())
+                );
               },
               child: Text('이미지 수정 마치기'),
             ),

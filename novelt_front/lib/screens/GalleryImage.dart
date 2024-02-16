@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'ShowImage.dart';
+
 class GalleryImage extends StatefulWidget {
   const GalleryImage({Key? key}) : super(key: key);
 
@@ -140,9 +142,6 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
             ],
           ),
 
-
-
-
         Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.all(8),
@@ -160,31 +159,39 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
                   children: [
                     AspectRatio(
                       aspectRatio: 1, // 정사각형 카드
-                      child: Card(
-                        clipBehavior: Clip.antiAlias,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 8, // 그림자 효과를 위한 elevation 값 추가
-                        child: Column(
-                          children: <Widget>[
-                            Expanded(
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(child: Image(image: card.topLeft, fit: BoxFit.cover)),
-                                  Expanded(child: Image(image: card.topRight, fit: BoxFit.cover)),
-                                ],
+                      child: GestureDetector(
+                        onTap: () {
+                          // 여기서 탭 이벤트 처리를 합니다. 예를 들어, DetailPage로 이동
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ShowImages(), // DetailPage는 구현해야 할 새로운 페이지입니다.
+                          ));
+                        },
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 8, // 그림자 효과를 위한 elevation 값 추가
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(child: Image(image: card.topLeft, fit: BoxFit.cover)),
+                                    Expanded(child: Image(image: card.topRight, fit: BoxFit.cover)),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(child: Image(image: card.bottomLeft, fit: BoxFit.cover)),
-                                  Expanded(child: Image(image: card.bottomRight, fit: BoxFit.cover)),
-                                ],
+                              Expanded(
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(child: Image(image: card.bottomLeft, fit: BoxFit.cover)),
+                                    Expanded(child: Image(image: card.bottomRight, fit: BoxFit.cover)),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

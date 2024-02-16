@@ -9,6 +9,7 @@ import 'package:novelt_front/screens/GalleryImage.dart';
 import 'package:novelt_front/screens/GalleryVideo.dart';
 import 'package:novelt_front/screens/InputPrompt.dart';
 import 'package:novelt_front/screens/LoginSignupScreenState.dart';
+import 'package:novelt_front/screens/ShowImage.dart';
 
 void main(){
   runApp(const App());
@@ -20,7 +21,7 @@ class App extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
-      home: SelectScene(),
+      home: GalleryImage(),
     );
   }
 }

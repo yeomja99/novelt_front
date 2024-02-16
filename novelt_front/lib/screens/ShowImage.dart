@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/SaveandGeneration.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'Edit.dart';
 
-class MyApp extends StatefulWidget {
+class ShowImages extends StatefulWidget {
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<ShowImages> createState() => _ShowImagesState();
 }
 
-class _MyAppState extends State<MyApp>
+class _ShowImagesState extends State<ShowImages>
     with SingleTickerProviderStateMixin{
   late TabController _tabController;
   int _selectedIndex = 0;
@@ -93,12 +92,11 @@ class _MyAppState extends State<MyApp>
             SizedBox(
               height: 10,
             ),
-          Expanded(child: ImagesGridPageView()),
-
+            Expanded(child: ImagesGridPageView()),
             SizedBox(
               height: 10,
             ),
-        ],
+          ],
         ),
         ),
       ),
@@ -113,27 +111,22 @@ class ImagesGridPageView extends StatefulWidget {
 
 class _ImagesGridPageViewState extends State<ImagesGridPageView> {
   final PageController controller = PageController();
-  int _currentPageIndex = 0; // 현재 페이지 인덱스
+  int _currentPageIndex = 0;
 
-  // 각 페이지에 대한 GridView 생성
-  List<Widget> pages = List.generate(
-    6,
-        (index) => GridView.count(
-      crossAxisCount: 2, // 2x2 그리드
-      // mainAxisSpacing: 10,
-      // crossAxisSpacing: 10,
-      padding: EdgeInsets.all(10),
-      children: List.generate(4, (index) => Container(
-        child: Image.asset(
-          'images/testimg.png', // 실제 이미지 경로로 변경 필요
-          fit: BoxFit.cover,
-        ),
-      )),
-    ),
-  );
+
+  List<Widget> generatePages() {
+    String imagePath = 'images/testimg.png';
+    return List.generate(6, (index) {
+      return Image.asset(
+        imagePath,
+        fit: BoxFit.contain,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> pages = generatePages();
     return Column(
       children: [
         Expanded(
@@ -150,25 +143,16 @@ class _ImagesGridPageViewState extends State<ImagesGridPageView> {
             },
           ),
         ),
-        if (_currentPageIndex != pages.length - 1) // 마지막 페이지가 아닌 경우에만 SmoothPageIndicator 표시
-          SmoothPageIndicator(
-            controller: controller,
-            count: pages.length,
-            effect: WormEffect(
-              dotHeight: 10,
-              dotWidth: 10,
-              type: WormType.thinUnderground,
-            ),
+        SizedBox(height: 30,),
+        SmoothPageIndicator(
+          controller: controller,
+          count: pages.length,
+          effect: WormEffect(
+            dotHeight: 10,
+            dotWidth: 10,
+            type: WormType.thinUnderground,
           ),
-        if (_currentPageIndex == pages.length - 1) // 마지막 페이지인 경우 버튼 표시
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                // 버튼 클릭 시 실행할 동작
-              },
-              child: Text('이미지 수정 마치기'),
-            ),
-          ),
+        ),
       ],
     );
   }
