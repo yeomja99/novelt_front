@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class SelectScene extends StatefulWidget {
-  @override
-  State<SelectScene> createState() => _SelectSceneState();
+void main() {
+  runApp(MyApp());
 }
 
-class _SelectSceneState extends State<SelectScene>
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp>
     with SingleTickerProviderStateMixin{
   late TabController _tabController;
   int _selectedIndex = 0;
@@ -89,12 +93,12 @@ class _SelectSceneState extends State<SelectScene>
             SizedBox(
               height: 10,
             ),
-            Expanded(child: ImagesGridPageView()),
+          Expanded(child: ImagesGridPageView()),
 
             SizedBox(
               height: 10,
             ),
-          ],
+        ],
         ),
         ),
       ),

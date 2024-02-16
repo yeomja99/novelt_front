@@ -107,51 +107,51 @@ class _EditState extends State<Edit>
                     edittext = text;
                   });
                 },
-                    decoration: InputDecoration(
-                        labelText: '수정 사항을 입력해주세요 :)',
-                        hintText: '예: 주인공을 조금 더 멋지게 그려주세요.',
-                        filled: true,
-                        fillColor: Colors.grey.shade300,
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none
-                        )
-                    ),
+                  decoration: InputDecoration(
+                      labelText: '수정 사항을 입력해주세요 :)',
+                      hintText: '예: 주인공을 조금 더 멋지게 그려주세요.',
+                      filled: true,
+                      fillColor: Colors.grey.shade300,
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide.none
+                      )
+                  ),
                 ),
               ),
             ),
-            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-                onPressed: (){},
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size(170, 55),
-                  backgroundColor: Color(0xfff0e0ff),
-                  foregroundColor: Color(0xFF000000),
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w100,
-                    fontSize: 20,
-                    color: Color(0xFFFFFFFF),
+            children: [
+              ElevatedButton(
+                  onPressed: (){},
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: Size(170, 55),
+                    backgroundColor: Color(0xfff0e0ff),
+                    foregroundColor: Color(0xFF000000),
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 20,
+                      color: Color(0xFFFFFFFF),
+                    ),
                   ),
-                ),
-                child: const Text('수정하기')),
-            ElevatedButton(
-                onPressed: (){},
-                style: OutlinedButton.styleFrom(
-                  minimumSize: Size(170, 55),
-                  backgroundColor: Color(0xFF9156CA),
-                  foregroundColor: Color(0xFFFFFFFF),
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w100,
-                    fontSize: 20,
-                    color: Color(0xFFFFFFFF),
+                  child: const Text('수정하기')),
+              ElevatedButton(
+                  onPressed: (){},
+                  style: OutlinedButton.styleFrom(
+                    minimumSize: Size(170, 55),
+                    backgroundColor: Color(0xFF9156CA),
+                    foregroundColor: Color(0xFFFFFFFF),
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 20,
+                      color: Color(0xFFFFFFFF),
+                    ),
                   ),
-                ),
-                child: const Text('저장하기')),
-          ],),
-          ],
-        ),
+                  child: const Text('저장하기')),
+            ],),
+        ],
+      ),
       ),
     );
   }

@@ -15,4 +15,7 @@ class ApiService{
     throw Error();
   }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7c596e57f2d63d404c0bb7626e01400eacffb469

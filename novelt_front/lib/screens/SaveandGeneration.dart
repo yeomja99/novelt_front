@@ -30,13 +30,13 @@ class SaveandGeneration extends StatelessWidget {
                   children: [
                     SizedBox(height: 100,),
                     Icon(Icons.check_circle_rounded,
-                    size:100),
+                        size:100),
                     SizedBox(height: 10,),
                     Text('이미지 생성 완료!',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold
-                    ),),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold
+                      ),),
                     SizedBox(height: 50
                       ,),
                     ElevatedButton(

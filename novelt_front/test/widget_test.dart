@@ -27,4 +27,8 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 7c596e57f2d63d404c0bb7626e01400eacffb469
