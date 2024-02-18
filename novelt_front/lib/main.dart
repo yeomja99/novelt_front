@@ -1,14 +1,15 @@
 
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/Edit.dart';
 import 'package:novelt_front/screens/GalleryImage.dart';
 import 'package:novelt_front/screens/GalleryVideo.dart';
 import 'package:novelt_front/screens/InputPrompt.dart';
 import 'package:novelt_front/screens/LoginSignupScreenState.dart';
-import 'package:novelt_front/screens/SignUpEmail.dart';
-import 'package:novelt_front/screens/SignUpName.dart';
-import 'package:novelt_front/screens/SignUpPW.dart';
+import 'package:novelt_front/screens/SaveandGeneration.dart';
+import 'package:novelt_front/screens/SelectScene.dart';
+import 'package:novelt_front/screens/ShareShorts.dart';
+import 'package:novelt_front/screens/ClickShorts.dart';
 
-import 'screens/SignIn.dart';
 
 void main(){
   runApp(const App());
@@ -20,7 +21,7 @@ class App extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
-      home: LoginSignupScreen(),
+      home: Edit(),
     );
   }
 }
