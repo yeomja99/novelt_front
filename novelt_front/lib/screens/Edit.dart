@@ -17,12 +17,12 @@ class _EditState extends State<Edit>
   final editController = TextEditingController();
   String edittext = "";
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 3, vsync: this, initialIndex: 1);
     _tabController.addListener(
             () => setState(() => _selectedIndex = _tabController.index));
   }
@@ -37,38 +37,28 @@ class _EditState extends State<Edit>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: const Text(
-          "CREATE TRAILER",
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
       bottomNavigationBar: SizedBox(
         height: 70,
         child: TabBar(controller: _tabController, tabs: const <Widget>[
           Tab(
             icon: Icon(
+              Icons.grid_on,
+              color: Colors.black,
+              size:28,
+            ),
+          ),
+          Tab(
+            icon: Icon(
+              Icons.add_circle,
+              color: Colors.deepPurpleAccent,
+              size: 42,
+            ),
+          ),
+          Tab(
+            icon: Icon(
               Icons.person,
               color: Colors.black,
-            ),
-          ),
-          Tab(
-            icon: Icon(
-              Icons.chat,
-              color: Colors.black,
-            ),
-          ),
-          Tab(
-            icon: Icon(
-              Icons.settings,
-              color: Colors.black,
+              size: 32,
             ),
           )
         ]),
@@ -76,8 +66,11 @@ class _EditState extends State<Edit>
       body: SingleChildScrollView(child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          SizedBox(
+            height: 40,
+          ),
           Container(
-            padding: EdgeInsets.only(left: 20),
+            padding: EdgeInsets.only(left: 20,top:15),
             child: Text('장면 설명',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -90,7 +83,7 @@ class _EditState extends State<Edit>
                 fontSize: 18,
               ),),),
           SizedBox(
-            height: 30,
+            height: 15,
           ),
           Image.asset('images/testimg.png',
             width: 270,

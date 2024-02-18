@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'GalleryImage.dart';
+import 'LoadingScreen.dart';
 
 class InputPrompt extends StatefulWidget {
   InputPrompt({Key? key}) : super(key: key);
@@ -132,7 +133,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 3),
+                SizedBox(height: 1),
                 Text(
                   '숏폼 제작을 위한 웹소설 정보를 입력해주세요.',
                   style: TextStyle(
@@ -471,9 +472,11 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                         elevation: 3, // 그림자 깊이 설정
                       ),
                       onPressed: () {
-                        setState(() {
-                          containerList.add(createCharacterContainer()); // 새 Container 추가
-                        });
+                        // LoadingScreen으로 네비게이션
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoadingScreen()),
+                        );
                         // 버튼이 눌렸을 때 실행할 기능
                       },
                       child: Text('제출하기'), // 버튼 텍스트 설정
