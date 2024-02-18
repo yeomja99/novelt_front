@@ -187,3 +187,11 @@ class _ImagesGridPageViewState extends State<ImagesGridPageView> {
     );
   }
 }
+final colors = const [
+  Colors.red,
+  Colors.green,
+  Colors.greenAccent,
+  Colors.amberAccent,
+  Colors.blue,
+  Colors.amber,
+];

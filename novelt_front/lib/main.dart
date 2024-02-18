@@ -5,11 +5,16 @@ import 'package:novelt_front/screens/Edit.dart';
 import 'package:novelt_front/screens/SaveandGeneration.dart';
 import 'package:novelt_front/screens/SelectScene.dart';
 import 'package:novelt_front/screens/ShareShorts.dart';
+import 'package:novelt_front/screens/Edit.dart';
 import 'package:novelt_front/screens/GalleryImage.dart';
 import 'package:novelt_front/screens/GalleryVideo.dart';
 import 'package:novelt_front/screens/InputPrompt.dart';
 import 'package:novelt_front/screens/LoginSignupScreenState.dart';
 import 'package:novelt_front/screens/ShowImage.dart';
+import 'package:novelt_front/screens/SelectScene.dart';
+import 'package:novelt_front/screens/ShareShorts.dart';
+import 'package:novelt_front/screens/ClickShorts.dart';
+
 
 void main(){
   runApp(const App());

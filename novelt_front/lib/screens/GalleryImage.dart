@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/InputPrompt.dart';
+
+import 'GalleryVideo.dart';
 
 import 'ShowImage.dart';
 
@@ -35,13 +38,35 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
   void initState() {
     super.initState();
     _tabController1 = TabController(length: 3, vsync: this);
-    _tabController1.addListener(
-            () => setState(() => _selectedIndex = _tabController1.index)
-    );
+    // _tabController1에 대한 리스너 설정
+    _tabController1.addListener(() {
+      if (_tabController1.indexIsChanging) {
+        // _tabController2의 인덱스 변경이 완료되었는지 확인
+        return;
+      }
+      if (_tabController1.index == 1) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => InputPrompt()));
+      }
+      setState(() {
+        _selectedIndex = _tabController1.index; // 선택된 탭 인덱스 업데이트
+      });
+    });
     _tabController2 = TabController(length: 2, vsync: this);
-    _tabController2.addListener(
-            () => setState(() => _selectedIndex = _tabController2.index)
-    );
+    _tabController2.addListener(() {
+      if (_tabController2.indexIsChanging) {
+        // _tabController2의 인덱스 변경이 완료되었는지 확인
+        return;
+      }
+      if (_tabController2.index == 1) {
+        // 두 번째 탭(인덱스가 1)이 선택되었을 때
+        Navigator.push(context, MaterialPageRoute(builder: (context) => GalleryVideo()));
+        // GalleryVideo 페이지로 네비게이션
+      }
+      setState(() {
+        _selectedIndex = _tabController2.index; // 선택된 탭 인덱스 업데이트
+      });
+    });
   }
 
   @override
