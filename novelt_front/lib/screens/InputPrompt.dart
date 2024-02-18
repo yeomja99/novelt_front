@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'GalleryImage.dart';
+import 'LoadingScreen.dart';
+import 'MyPage.dart';
 
 class InputPrompt extends StatefulWidget {
   InputPrompt({Key? key}) : super(key: key);
@@ -22,7 +24,8 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
     setState(() {
       _selectValue = genrelist[0];
     });
-    _tabController1 = TabController(length: 3, vsync: this, initialIndex: 1); // 여기에서 initialIndex를 추가합니다.
+    _tabController1 = TabController(length: 3, vsync: this);
+    // _tabController1에 대한 리스너 설정
     _tabController1.addListener(() {
       if (_tabController1.indexIsChanging) {
         // _tabController2의 인덱스 변경이 완료되었는지 확인
@@ -32,6 +35,11 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => GalleryImage()));
       }
+      else if (_tabController1.index == 2) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MyPage()));
+      }
+
       setState(() {
         _selectedIndex1 = _tabController1.index; // 선택된 탭 인덱스 업데이트
       });
@@ -76,55 +84,55 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFFE5DEFF),
-        appBar: AppBar(
-          title: const Text(
-            'CREATE TRAILER',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-            ),
-          ),
-          centerTitle: true,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color(0xFF9a7eff), // Left side color
-                  Color(0xFFbe82f4), // Right side color, change to desired color
-                ],
-              ),
-            ),
-          ),// Adds a shadow below the AppBar
-        ),
-        bottomNavigationBar: SizedBox(
-          height: 70,
-          child: TabBar(controller: _tabController1, tabs: const <Widget>[
-            Tab(
-              icon: Icon(
-                Icons.grid_on,
-                color: Colors.black,
-                size:28,
-              ),
-            ),
-            Tab(
-              icon: Icon(
-                Icons.add_circle,
-                color: Colors.deepPurpleAccent,
-                size: 42,
-              ),
-            ),
-            Tab(
-              icon: Icon(
-                Icons.person,
-                color: Colors.black,
-                size: 32,
-              ),
-            )
-          ]),
-        ),
+        // appBar: AppBar(
+        //   title: const Text(
+        //     'CREATE TRAILER',
+        //     style: TextStyle(
+        //       fontSize: 22,
+        //       fontWeight: FontWeight.w700,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        //   centerTitle: true,
+        //   flexibleSpace: Container(
+        //     decoration: BoxDecoration(
+        //       gradient: LinearGradient(
+        //         begin: Alignment.centerLeft,
+        //         end: Alignment.centerRight,
+        //         colors: [
+        //           Color(0xFF9a7eff), // Left side color
+        //           Color(0xFFbe82f4), // Right side color, change to desired color
+        //         ],
+        //       ),
+        //     ),
+        //   ),// Adds a shadow below the AppBar
+        // ),
+        // bottomNavigationBar: SizedBox(
+        //   height: 70,
+        //   child: TabBar(controller: _tabController1, tabs: const <Widget>[
+        //     Tab(
+        //       icon: Icon(
+        //         Icons.grid_on,
+        //         color: Colors.black,
+        //         size:28,
+        //       ),
+        //     ),
+        //     Tab(
+        //       icon: Icon(
+        //         Icons.add_circle,
+        //         color: Colors.deepPurpleAccent,
+        //         size: 42,
+        //       ),
+        //     ),
+        //     Tab(
+        //       icon: Icon(
+        //         Icons.person,
+        //         color: Colors.black,
+        //         size: 32,
+        //       ),
+        //     )
+        //   ]),
+        // ),
       body:
         SingleChildScrollView(
           child: Padding(
@@ -132,7 +140,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 3),
+                SizedBox(height: 1),
                 Text(
                   '숏폼 제작을 위한 웹소설 정보를 입력해주세요.',
                   style: TextStyle(
@@ -471,9 +479,11 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                         elevation: 3, // 그림자 깊이 설정
                       ),
                       onPressed: () {
-                        setState(() {
-                          containerList.add(createCharacterContainer()); // 새 Container 추가
-                        });
+                        // LoadingScreen으로 네비게이션
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoadingScreen()),
+                        );
                         // 버튼이 눌렸을 때 실행할 기능
                       },
                       child: Text('제출하기'), // 버튼 텍스트 설정

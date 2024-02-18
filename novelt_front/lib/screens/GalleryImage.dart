@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:novelt_front/screens/InputPrompt.dart';
+import 'package:novelt_front/screens/MyPage.dart';
 
 import 'GalleryVideo.dart';
+import 'ShowGalleryImages.dart';
 
-import 'ShowImage.dart';
 
 class GalleryImage extends StatefulWidget {
   const GalleryImage({Key? key}) : super(key: key);
@@ -48,6 +49,10 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => InputPrompt()));
       }
+      else if (_tabController1.index == 2) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MyPage()));
+      }
       setState(() {
         _selectedIndex = _tabController1.index; // 선택된 탭 인덱스 업데이트
       });
@@ -67,6 +72,7 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
         _selectedIndex = _tabController2.index; // 선택된 탭 인덱스 업데이트
       });
     });
+
   }
 
   @override
@@ -106,66 +112,43 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF7F7FF),
-      appBar: AppBar(
-        title: const Text(
-          'TRAILER',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xFF9a7eff), // Left side color
-                Color(0xFFbe82f4), // Right side color, change to desired color
-              ],
-            ),
-          ),
-        ),// Adds a shadow below the AppBar
-      ),
 
-      bottomNavigationBar: SizedBox(
-        height: 70,
-        child: TabBar(controller: _tabController1, tabs: const <Widget>[
-          Tab(
-            icon: Icon(
-              Icons.grid_on,
-              color: Colors.black,
-              size:28,
-            ),
-          ),
-          Tab(
-            icon: Icon(
-              Icons.add_circle,
-              color: Colors.deepPurpleAccent,
-              size: 42,
-            ),
-          ),
-          Tab(
-            icon: Icon(
-              Icons.person,
-              color: Colors.black,
-              size: 32,
-            ),
-          )
-        ]),
-      ),
+      // bottomNavigationBar: SizedBox(
+      //   height: 70,
+      //   child: TabBar(controller: _tabController1, tabs: const <Widget>[
+      //     Tab(
+      //       icon: Icon(
+      //         Icons.grid_on,
+      //         color: Colors.black,
+      //         size:28,
+      //       ),
+      //     ),
+      //     Tab(
+      //       icon: Icon(
+      //         Icons.add_circle,
+      //         color: Colors.deepPurpleAccent,
+      //         size: 42,
+      //       ),
+      //     ),
+      //     Tab(
+      //       icon: Icon(
+      //         Icons.person,
+      //         color: Colors.black,
+      //         size: 32,
+      //       ),
+      //     )
+      //   ]),
+      // ),
       body: Column(
         children: <Widget>[
           // ToggleButtons with each icon centered in its half of the screen
-          TabBar(
-            controller: _tabController2,
-            tabs: <Widget>[
-              Tab(icon: Icon(Icons.grid_on)),
-              Tab(icon: Icon(Icons.video_collection_outlined)),
-            ],
-          ),
+          // TabBar(
+          //   controller: _tabController2,
+          //   tabs: <Widget>[
+          //     Tab(icon: Icon(Icons.grid_on)),
+          //     Tab(icon: Icon(Icons.video_collection_outlined)),
+          //   ],
+          // ),
 
         Expanded(
             child: GridView.builder(
@@ -179,7 +162,15 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
               itemCount: imageCards.length,
               itemBuilder: (BuildContext context, int index) {
                 final card = imageCards[index];
-                return Column(
+                return GestureDetector( // Wrap the card in GestureDetector
+                    onTap: () {
+                  // Navigate to ShowGalleryImages when the card is tapped
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShowGalleryImages()), // Pass the selected card data to the ShowGalleryImages page
+                  );
+                },
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     AspectRatio(
@@ -188,7 +179,7 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
                         onTap: () {
                           // 여기서 탭 이벤트 처리를 합니다. 예를 들어, DetailPage로 이동
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ShowImages(), // DetailPage는 구현해야 할 새로운 페이지입니다.
+                            builder: (context) => ShowGalleryImages(), // DetailPage는 구현해야 할 새로운 페이지입니다.
                           ));
                         },
                         child: Card(
@@ -239,6 +230,7 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
                     ),
 
                   ],
+                ),
                 );
               },
             ),

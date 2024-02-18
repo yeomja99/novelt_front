@@ -27,19 +27,15 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     image: AssetImage('image/red.jpg'), fit: BoxFit.fill),
               ),
               child: Container(
-                padding: EdgeInsets.only(top: 90, left: 20),
+                padding: EdgeInsets.only(top: 50, left: 157),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        text: 'NOVEL T',
-                        style: TextStyle(
-                            letterSpacing: 1.0,
-                            fontSize: 25,
-                            color: Colors.black),
-
-                      ),
+                    Image.asset(
+                      'images/logo.png',
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
                     ),
                     SizedBox(
                       height: 5.0,
@@ -143,7 +139,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.account_circle,
-                                    color: Color(0xFFB6C7D1),
+                                    color: Color(0xFF737379),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide:
@@ -161,7 +157,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   ),
                                   hintText: 'User name',
                                   hintStyle: TextStyle(
-                                      fontSize: 14, color: Color(0xFFC398ED)),
+                                      fontSize: 14, color: Color(0xFF737379)),
                                   contentPadding: EdgeInsets.all(10)),
                             ),
                             SizedBox(
@@ -171,7 +167,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.email,
-                                    color: Color(0xFFB6C7D1),
+                                    color: Color(0xFF737379),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide:
@@ -187,9 +183,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                       Radius.circular(35.0),
                                     ),
                                   ),
-                                  hintText: 'email',
+                                  hintText: 'Email',
                                   hintStyle: TextStyle(
-                                      fontSize: 14, color: Color(0xFFC398ED)),
+                                      fontSize: 14, color: Color(0xFF737379)),
                                   contentPadding: EdgeInsets.all(10)),
                             ),
                             SizedBox(
@@ -199,7 +195,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.lock,
-                                    color: Color(0xFFB6C7D1),
+                                    color: Color(0xFF737379),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide:
@@ -215,9 +211,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                       Radius.circular(35.0),
                                     ),
                                   ),
-                                  hintText: 'password',
+                                  hintText: 'Password',
                                   hintStyle: TextStyle(
-                                      fontSize: 14, color: Color(0xFFC398ED)),
+                                      fontSize: 14, color: Color(0xFF737379)),
                                   contentPadding: EdgeInsets.all(10)),
                             )
                           ],
@@ -234,7 +230,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.email,
-                                  color: Color(0xFFB6C7D1),
+                                  color: Color(0xFF737379),
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Color(0xFFC398ED)),
@@ -248,9 +244,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     Radius.circular(35.0),
                                   ),
                                 ),
-                                hintText: 'email',
+                                hintText: 'Email',
                                 hintStyle: TextStyle(
-                                    fontSize: 14, color: Color(0xFFC398ED)),
+                                    fontSize: 14, color: Color(0xFF737379)),
                                 contentPadding: EdgeInsets.all(10),
                               ),
                             ),
@@ -261,7 +257,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.lock,
-                                    color: Color(0xFFB6C7D1),
+                                    color: Color(0xFF737379),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide:
@@ -277,9 +273,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                       Radius.circular(35.0),
                                     ),
                                   ),
-                                  hintText: 'password',
+                                  hintText: 'Password',
                                   hintStyle: TextStyle(
-                                      fontSize: 14, color: Color(0xFFC398ED)),
+                                      fontSize: 14, color: Color(0xFF737379)),
                                   contentPadding: EdgeInsets.all(10)),
                             )
                           ],
@@ -300,18 +296,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             child: Center(
               child: Container(
                 padding: EdgeInsets.all(15),
-                height: 90,
-                width: 90,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(50)),
+                height: 100,
+                width: 100,
+
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                         colors: [Colors.purple, Colors.deepPurple],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight),
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(50),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.3),

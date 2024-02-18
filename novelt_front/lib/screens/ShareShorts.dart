@@ -53,30 +53,21 @@ class _ShareShortsState extends State<ShareShorts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('CREATE TRAILER',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        centerTitle:true,
-      ),
       body: Stack(
         children: [
           if (aspectRatio != null) ...[
             Center(
-              child: Container(
-                padding: EdgeInsets.only(
-                    bottom:
-                    MediaQuery.of(context).padding.top + kToolbarHeight),
+              child: Padding(
+    padding: EdgeInsets.only(
+      top: 50.0,
+      bottom: 80.0,
+    ),
                 child: AspectRatio(
                     aspectRatio: aspectRatio!, child: VideoPlayer(controller)),
               ),
             ),
             Positioned(
-              bottom: 20,
+              bottom: 10,
               child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   width: MediaQuery.of(context).size.width,
@@ -170,10 +161,10 @@ class _ShareShortsState extends State<ShareShorts> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Icon(Icons.share_rounded,
-                            size:60),
                         Icon(Icons.download_rounded,
-                            size:60)
+                            size:33),
+                        Icon(Icons.share_rounded,
+                            size:33),
                       ],)],
                   )
               ),

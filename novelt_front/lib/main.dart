@@ -1,32 +1,18 @@
-
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/MyPage.dart';
+import 'package:novelt_front/screens/GalleryPage.dart';
 import 'package:novelt_front/screens/InputPrompt.dart';
-import 'package:novelt_front/screens/Edit.dart';
-import 'package:novelt_front/screens/SaveandGeneration.dart';
 import 'package:novelt_front/screens/SelectScene.dart';
-import 'package:novelt_front/screens/ShareShorts.dart';
-import 'package:novelt_front/screens/Edit.dart';
-import 'package:novelt_front/screens/GalleryImage.dart';
-import 'package:novelt_front/screens/GalleryVideo.dart';
-import 'package:novelt_front/screens/InputPrompt.dart';
-import 'package:novelt_front/screens/LoginSignupScreenState.dart';
-import 'package:novelt_front/screens/ShowImage.dart';
-import 'package:novelt_front/screens/SelectScene.dart';
-import 'package:novelt_front/screens/ShareShorts.dart';
-import 'package:novelt_front/screens/ClickShorts.dart';
 
 
-void main(){
-  runApp(const App());
-}
 
-class App extends StatelessWidget{
-  const App({super.key});
+void main() => runApp(MyApp());
 
+class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
-      home: GalleryImage(),
+      home: SelectScene(),
     );
   }
 }

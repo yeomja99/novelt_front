@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'ClickShorts.dart';
+import 'ShowGalleryVideo.dart';
 import 'GalleryImage.dart';
 import 'InputPrompt.dart';
 
@@ -66,68 +66,34 @@ class _GalleryVideoState extends State<GalleryVideo> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF7F7FF),
-      appBar: AppBar(
-        title: const Text(
-          'TRAILER',
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xFF9a7eff), // Left side color
-                Color(0xFFbe82f4), // Right side color, change to desired color
-              ],
-            ),
-          ),
-        ),// Adds a shadow below the AppBar
-      ),
-
-      bottomNavigationBar: SizedBox(
-        height: 70,
-        child: TabBar(controller: _tabController1, tabs: const <Widget>[
-          Tab(
-            icon: Icon(
-              Icons.grid_on,
-              color: Colors.black,
-              size:28,
-            ),
-          ),
-          Tab(
-            icon: Icon(
-              Icons.add_circle,
-              color: Colors.deepPurpleAccent,
-              size: 42,
-            ),
-          ),
-          Tab(
-            icon: Icon(
-              Icons.person,
-              color: Colors.black,
-              size: 32,
-            ),
-          )
-        ]),
-      ),
+      // bottomNavigationBar: SizedBox(
+      //   height: 70,
+      //   child: TabBar(controller: _tabController1, tabs: const <Widget>[
+      //     Tab(
+      //       icon: Icon(
+      //         Icons.grid_on,
+      //         color: Colors.black,
+      //         size:28,
+      //       ),
+      //     ),
+      //     Tab(
+      //       icon: Icon(
+      //         Icons.add_circle,
+      //         color: Colors.deepPurpleAccent,
+      //         size: 42,
+      //       ),
+      //     ),
+      //     Tab(
+      //       icon: Icon(
+      //         Icons.person,
+      //         color: Colors.black,
+      //         size: 32,
+      //       ),
+      //     )
+      //   ]),
+      // ),
       body: Column(
         children: <Widget>[
-          // ToggleButtons with each icon centered in its half of the screen
-          TabBar(
-            controller: _tabController2,
-            tabs: <Widget>[
-              Tab(icon: Icon(Icons.grid_on)),
-              Tab(icon: Icon(Icons.video_collection_outlined)),
-            ],
-          ),
-
-
           Expanded(
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
