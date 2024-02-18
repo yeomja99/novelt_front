@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SaveandGeneration extends StatelessWidget {
-  SaveandGeneration({super.key});
+import 'LoadingScreen.dart';
+
+class SaveandGenerationImages extends StatelessWidget {
+  SaveandGenerationImages({super.key});
 
   final idController = TextEditingController();
   final pwController = TextEditingController();
@@ -11,14 +13,27 @@ class SaveandGeneration extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('CREATE TRAILER',
+        title: const Text(
+          'CREATE TRAILER',
           style: TextStyle(
             fontSize: 22,
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
           ),
         ),
-        centerTitle:true,
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFF9a7eff), // Left side color
+                Color(0xFFbe82f4), // Right side color, change to desired color
+              ],
+            ),
+          ),
+        ),// Adds a shadow below the AppBar
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -54,7 +69,13 @@ class SaveandGeneration extends StatelessWidget {
                         child: const Text('이미지 저장하기')),
                     SizedBox(height: 10,),
                     ElevatedButton(
-                        onPressed: (){},
+                        onPressed: () {
+                          // Use Navigator.push to navigate to the LoadingScreen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoadingScreen()), // Replace with the actual LoadingScreen widget if named differently
+                          );
+                        },
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(340, 55),
                           backgroundColor: Color(0xFF9156CA),

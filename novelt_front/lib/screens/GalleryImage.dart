@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:novelt_front/screens/InputPrompt.dart';
 
 import 'GalleryVideo.dart';
+import 'ShowGalleryImages.dart';
 
 class GalleryImage extends StatefulWidget {
   const GalleryImage({Key? key}) : super(key: key);
@@ -180,7 +181,15 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
               itemCount: imageCards.length,
               itemBuilder: (BuildContext context, int index) {
                 final card = imageCards[index];
-                return Column(
+                return GestureDetector( // Wrap the card in GestureDetector
+                    onTap: () {
+                  // Navigate to ShowGalleryImages when the card is tapped
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ShowGalleryImages()), // Pass the selected card data to the ShowGalleryImages page
+                  );
+                },
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     AspectRatio(
@@ -232,6 +241,7 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
                     ),
 
                   ],
+                ),
                 );
               },
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'ClickShorts.dart';
+import 'ShowGalleryVideo.dart';
 import 'GalleryImage.dart';
 import 'InputPrompt.dart';
 
