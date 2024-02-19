@@ -38,47 +38,11 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    _tabController1 = TabController(length: 3, vsync: this);
-    // _tabController1에 대한 리스너 설정
-    _tabController1.addListener(() {
-      if (_tabController1.indexIsChanging) {
-        // _tabController2의 인덱스 변경이 완료되었는지 확인
-        return;
-      }
-      if (_tabController1.index == 1) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => InputPrompt()));
-      }
-      else if (_tabController1.index == 2) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MyPage()));
-      }
-      setState(() {
-        _selectedIndex = _tabController1.index; // 선택된 탭 인덱스 업데이트
-      });
-    });
-    _tabController2 = TabController(length: 2, vsync: this);
-    _tabController2.addListener(() {
-      if (_tabController2.indexIsChanging) {
-        // _tabController2의 인덱스 변경이 완료되었는지 확인
-        return;
-      }
-      if (_tabController2.index == 1) {
-        // 두 번째 탭(인덱스가 1)이 선택되었을 때
-        Navigator.push(context, MaterialPageRoute(builder: (context) => GalleryVideo()));
-        // GalleryVideo 페이지로 네비게이션
-      }
-      setState(() {
-        _selectedIndex = _tabController2.index; // 선택된 탭 인덱스 업데이트
-      });
-    });
-
   }
 
   @override
   void dispose() {
-    _tabController1.dispose();
-    _tabController2.dispose();
+    // _tabController2.dispose();
     super.dispose();
   }
   // 위의 CardImage 리스트로 대체합니다.
@@ -113,42 +77,8 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
     return Scaffold(
       backgroundColor: Color(0xFFF7F7FF),
 
-      // bottomNavigationBar: SizedBox(
-      //   height: 70,
-      //   child: TabBar(controller: _tabController1, tabs: const <Widget>[
-      //     Tab(
-      //       icon: Icon(
-      //         Icons.grid_on,
-      //         color: Colors.black,
-      //         size:28,
-      //       ),
-      //     ),
-      //     Tab(
-      //       icon: Icon(
-      //         Icons.add_circle,
-      //         color: Colors.deepPurpleAccent,
-      //         size: 42,
-      //       ),
-      //     ),
-      //     Tab(
-      //       icon: Icon(
-      //         Icons.person,
-      //         color: Colors.black,
-      //         size: 32,
-      //       ),
-      //     )
-      //   ]),
-      // ),
       body: Column(
         children: <Widget>[
-          // ToggleButtons with each icon centered in its half of the screen
-          // TabBar(
-          //   controller: _tabController2,
-          //   tabs: <Widget>[
-          //     Tab(icon: Icon(Icons.grid_on)),
-          //     Tab(icon: Icon(Icons.video_collection_outlined)),
-          //   ],
-          // ),
 
         Expanded(
             child: GridView.builder(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:novelt_front/screens/SelectScene.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Edit extends StatefulWidget {
@@ -36,6 +37,29 @@ class _EditState extends State<Edit>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'TRAILER',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFF9a7eff), // Left side color
+                Color(0xFFbe82f4), // Right side color, change to desired color
+              ],
+            ),
+          ),
+        ),// Adds a shadow below the AppBar
+      ),
       backgroundColor: Colors.white,
       bottomNavigationBar: SizedBox(
         height: 70,
@@ -66,9 +90,6 @@ class _EditState extends State<Edit>
       body: SingleChildScrollView(child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(
-            height: 40,
-          ),
           Container(
             padding: EdgeInsets.only(left: 20,top:15),
             child: Text('장면 설명',
@@ -130,7 +151,12 @@ class _EditState extends State<Edit>
                   ),
                   child: const Text('수정하기')),
               ElevatedButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SelectScene()),
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     minimumSize: Size(170, 55),
                     backgroundColor: Color(0xFF9156CA),

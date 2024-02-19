@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'AppController.dart';
 import 'GalleryImage.dart';
 import 'GalleryVideo.dart';
 import 'ShowGalleryImages.dart';
@@ -6,9 +7,14 @@ import 'ShowGalleryVideo.dart';
 
 
 class GalleryPage extends StatefulWidget {
+  final int initialIndex;
+
+  GalleryPage({this.initialIndex = 0});
+
   @override
   _GalleryPageState createState() => _GalleryPageState();
 }
+
 
 class _GalleryPageState extends State<GalleryPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
@@ -16,41 +22,45 @@ class _GalleryPageState extends State<GalleryPage> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    // AppController의 현재 값을 사용하여 TabController를 초기화
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: AppController().galleryTabIndex.value,
+    );
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    // AppController의 리스너를 제거하는 코드가 필요하면 여기에 추가
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // AppBar의 높이를 조절하기 위한 PreferredSize
-    final PreferredSizeWidget appBarBottom = PreferredSize(
-      preferredSize: Size.fromHeight(0.0), // TabBar의 높이 조절
-      child: Align(
-        alignment: Alignment.center,
-        child: TabBar(
-          controller: _tabController,
-          tabs: [
-            Tab(icon: Icon(Icons.grid_on),), // 이미지 탭
-            Tab(icon: Icon(Icons.video_collection_outlined), ), // 비디오 탭
-          ],
-        ),
-      ),
-    );
-
+    // AppBar 설정은 유지
     return Scaffold(
       appBar: AppBar(
-        bottom: appBarBottom,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(0.0),
+          child: Align(
+            alignment: Alignment.center,
+            child: TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(icon: Icon(Icons.grid_on)), // 이미지 탭
+                Tab(icon: Icon(Icons.video_collection_outlined)), // 비디오 탭
+              ],
+            ),
+          ),
+        ),
       ),
       body: TabBarView(
         controller: _tabController,
         children: [
-          GalleryImage(), // 이미지 갤러리 위젯
-          GalleryVideo(), // 비디오 갤러리 위젯
+          GalleryImage(),
+          GalleryVideo(),
         ],
       ),
     );

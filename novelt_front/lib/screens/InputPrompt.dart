@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/SelectScene.dart';
 
 import 'GalleryImage.dart';
 import 'LoadingScreen.dart';
@@ -84,55 +85,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFFE5DEFF),
-        // appBar: AppBar(
-        //   title: const Text(
-        //     'CREATE TRAILER',
-        //     style: TextStyle(
-        //       fontSize: 22,
-        //       fontWeight: FontWeight.w700,
-        //       color: Colors.white,
-        //     ),
-        //   ),
-        //   centerTitle: true,
-        //   flexibleSpace: Container(
-        //     decoration: BoxDecoration(
-        //       gradient: LinearGradient(
-        //         begin: Alignment.centerLeft,
-        //         end: Alignment.centerRight,
-        //         colors: [
-        //           Color(0xFF9a7eff), // Left side color
-        //           Color(0xFFbe82f4), // Right side color, change to desired color
-        //         ],
-        //       ),
-        //     ),
-        //   ),// Adds a shadow below the AppBar
-        // ),
-        // bottomNavigationBar: SizedBox(
-        //   height: 70,
-        //   child: TabBar(controller: _tabController1, tabs: const <Widget>[
-        //     Tab(
-        //       icon: Icon(
-        //         Icons.grid_on,
-        //         color: Colors.black,
-        //         size:28,
-        //       ),
-        //     ),
-        //     Tab(
-        //       icon: Icon(
-        //         Icons.add_circle,
-        //         color: Colors.deepPurpleAccent,
-        //         size: 42,
-        //       ),
-        //     ),
-        //     Tab(
-        //       icon: Icon(
-        //         Icons.person,
-        //         color: Colors.black,
-        //         size: 32,
-        //       ),
-        //     )
-        //   ]),
-        // ),
+
       body:
         SingleChildScrollView(
           child: Padding(
@@ -482,7 +435,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                         // LoadingScreen으로 네비게이션
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoadingScreen()),
+                          MaterialPageRoute(builder: (context) => SelectScene()),
                         );
                         // 버튼이 눌렸을 때 실행할 기능
                       },

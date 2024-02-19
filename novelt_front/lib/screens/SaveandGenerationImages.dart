@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/ShowGalleryImages.dart';
 
+import 'AppController.dart';
+import 'GalleryPage.dart';
 import 'LoadingScreen.dart';
+import 'Navigation.dart';
 
 class SaveandGenerationImages extends StatelessWidget {
   SaveandGenerationImages({super.key});
@@ -55,7 +59,11 @@ class SaveandGenerationImages extends StatelessWidget {
                     SizedBox(height: 50
                       ,),
                     ElevatedButton(
-                        onPressed: (){},
+                        onPressed: () {
+                          AppController().setSelectedIndex(0); // `GalleryPage`가 있는 메인 네비게이션 인덱스
+                          AppController().setGalleryTabIndex(0); // `GalleryVideo` 탭 인덱스
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => NavigationPage()));
+                        },
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(340, 55),
                           backgroundColor: Color(0xFFE460EF),
@@ -70,11 +78,9 @@ class SaveandGenerationImages extends StatelessWidget {
                     SizedBox(height: 10,),
                     ElevatedButton(
                         onPressed: () {
-                          // Use Navigator.push to navigate to the LoadingScreen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoadingScreen()), // Replace with the actual LoadingScreen widget if named differently
-                          );
+                          AppController().setSelectedIndex(0); // `GalleryPage`가 있는 메인 네비게이션 인덱스
+                          AppController().setGalleryTabIndex(1); // `GalleryVideo` 탭 인덱스
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => NavigationPage()));
                         },
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(340, 55),

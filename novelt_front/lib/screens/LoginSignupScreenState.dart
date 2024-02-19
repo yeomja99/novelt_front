@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/InputPrompt.dart';
+
+import 'Navigation.dart';
 
 
 class LoginSignupScreen extends StatefulWidget {
@@ -299,25 +302,34 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 height: 100,
                 width: 100,
 
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.purple, Colors.deepPurple],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight),
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                        offset: Offset(0, 1),
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
+                child: GestureDetector(
+                  onTap:(){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Navigation()),
+                    );
+                  },
+                  child: Container(
+                    // 여기에서 페이지 이동 함수 구현
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [Colors.purple, Colors.deepPurple],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight),
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 1),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

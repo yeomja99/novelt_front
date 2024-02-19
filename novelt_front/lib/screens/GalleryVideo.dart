@@ -20,44 +20,10 @@ class _GalleryVideoState extends State<GalleryVideo> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    _tabController1 = TabController(length: 3, vsync: this);
-    // _tabController1에 대한 리스너 설정
-    _tabController1.addListener(() {
-      if (_tabController1.indexIsChanging) {
-        // _tabController2의 인덱스 변경이 완료되었는지 확인
-        return;
-      }
-      if (_tabController1.index == 1) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => InputPrompt()));
-      }
-      setState(() {
-        _selectedIndex1 = _tabController1.index; // 선택된 탭 인덱스 업데이트
-      });
-    });
-
-    _tabController2 = TabController(length: 2, vsync: this, initialIndex: 1);
-    _tabController2.addListener(() {
-      if (_tabController2.indexIsChanging) {
-        // _tabController2의 인덱스 변경이 완료되었는지 확인
-        _tabController2.addListener(() => setState(() => _selectedIndex2 = _tabController2.index));
-        return;
-      }
-      if (_tabController2.index == 0) {
-        // 두 번째 탭(인덱스가 0)이 선택되었을 때
-        Navigator.push(context, MaterialPageRoute(builder: (context) => GalleryImage()));
-        // GalleryVideo 페이지로 네비게이션
-      }
-      setState(() {
-        _selectedIndex2 = _tabController2.index; // 선택된 탭 인덱스 업데이트
-      });
-    });
   }
 
   @override
   void dispose() {
-    _tabController1.dispose();
-    _tabController2.dispose();
     super.dispose();
   }
 

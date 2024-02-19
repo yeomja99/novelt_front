@@ -24,51 +24,85 @@ class _SelectSceneState extends State<SelectScene>
     initialPage: 0,
   );
 
-
   final pages = List.generate(
-      6,
-          (index) =>
-          Container(
-              margin: EdgeInsets.all(10),
-              child: Container(height: 400,
-                child:
-                Column(
+    6,
+        (index) => Container(
+      margin: EdgeInsets.all(10),
+      child: Builder( // Builder 위젯을 사용하여 context를 제공
+        builder: (BuildContext context) {
+          return Container(
+            height: 400,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
-                      children: [
-                        Image.asset('images/testimg.png',
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Edit()), // context 사용 가능
+                        );
+                      },
+                      child: Image.asset(
+                        'images/testimg.png',
+                        width: 120,
+                        height: 205,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Edit()), // context 사용 가능
+                        );
+                      },
+                      child: Image.asset(
+                        'images/testimg.png',
+                        width: 120,
+                        height: 205,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Edit()), // context 사용 가능
+                        );
+                      },
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Edit()), // context 사용 가능
+                          );
+                        },
+                        child: Image.asset(
+                          'images/testimg.png',
                           width: 120,
                           height: 205,
                         ),
-                        Image.asset('images/testimg.png',
-                          width: 120,
-                          height: 205,
-                        )
-                      ],),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
-                      children: [
-                        Image.asset('images/testimg.png',
-                          width: 120,
-                          height: 205,
-                        ),
-                        Image.asset('images/testimg.png',
-                          width: 120,
-                          height: 205,
-                        )
-                      ],),
-                  ],),)
-            // child: Container(
-            //   height: 280,
-            //   child: Center(
-            //       child: Text(
-            //         "Page $index",
-            //         style: TextStyle(color: Colors.black),
-            //       )),
-            // ),
-          ));
-
+                      ),
+                    ),
+                    Image.asset(
+                      'images/testimg.png',
+                      width: 120,
+                      height: 205,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    ),
+  );
 
   @override
   void initState() {
@@ -86,40 +120,35 @@ class _SelectSceneState extends State<SelectScene>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'TRAILER',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFF9a7eff), // Left side color
+                Color(0xFFbe82f4), // Right side color, change to desired color
+              ],
+            ),
+          ),
+        ),// Adds a shadow below the AppBar
+      ),
       backgroundColor: Colors.white,
-      // bottomNavigationBar: SizedBox(
-      //   height: 70,
-      //   child: TabBar(controller: _tabController, tabs: const <Widget>[
-      //     Tab(
-      //       icon: Icon(
-      //         Icons.grid_on,
-      //         color: Colors.black,
-      //         size:28,
-      //       ),
-      //     ),
-      //     Tab(
-      //       icon: Icon(
-      //         Icons.add_circle,
-      //         color: Colors.deepPurpleAccent,
-      //         size: 42,
-      //       ),
-      //     ),
-      //     Tab(
-      //       icon: Icon(
-      //         Icons.person,
-      //         color: Colors.black,
-      //         size: 32,
-      //       ),
-      //     )
-      //   ]),
-      // ),
+
       body: SingleChildScrollView( // Added SingleChildScrollView
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: 50,
-            ),
             Container(
               padding: EdgeInsets.only(left: 20, top: 10),
               child: Text(
@@ -190,85 +219,3 @@ class _SelectSceneState extends State<SelectScene>
   }
 }
 
-// class ImagesGridPageView extends StatefulWidget {
-//   @override
-//   _ImagesGridPageViewState createState() => _ImagesGridPageViewState();
-// }
-// class _ImagesGridPageViewState extends State<ImagesGridPageView> {
-//   final PageController controller = PageController();
-//   int _currentPageIndex = 0;
-//
-//   List<Widget> generateGridTiles() {
-//     return List.generate(4, (index) {
-//       // 이미지 경로는 배열 또는 다른 방식으로 관리하면 더 좋습니다.
-//       String imagePath = 'images/testimg.png';
-//
-//       return GestureDetector(
-//         onTap: () {
-//           // 여기서 context를 사용할 수 있습니다.
-//           Navigator.of(context).push(MaterialPageRoute(
-//             builder: (context) => Edit(),
-//           ));
-//         },
-//         child: Image.asset(
-//           imagePath,
-//           fit: BoxFit.cover,
-//         ),
-//       );
-//     });
-//   }
-//
-//   List<Widget> generatePages() {
-//     return List.generate(6, (index) {
-//       return GridView.count(
-//         crossAxisCount: 2,
-//         padding: EdgeInsets.all(10),
-//         children: generateGridTiles(),
-//       );
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     List<Widget> pages = generatePages();
-//     return Column(
-//       children: [
-//         Expanded(
-//           child: PageView.builder(
-//             controller: controller,
-//             itemCount: pages.length,
-//             onPageChanged: (int index) {
-//               setState(() {
-//                 _currentPageIndex = index; // 현재 페이지 인덱스 업데이트
-//               });
-//             },
-//             itemBuilder: (_, index) {
-//               return pages[index];
-//             },
-//           ),
-//         ),
-//         if (_currentPageIndex != pages.length - 1) // 마지막 페이지가 아닌 경우에만 SmoothPageIndicator 표시
-//           SmoothPageIndicator(
-//             controller: controller,
-//             count: pages.length,
-//             effect: WormEffect(
-//               dotHeight: 10,
-//               dotWidth: 10,
-//               type: WormType.thinUnderground,
-//             ),
-//           ),
-//         if (_currentPageIndex == pages.length - 1) // 마지막 페이지인 경우 버튼 표시
-//           Center(
-//             child: ElevatedButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context, MaterialPageRoute(builder: (_) => SaveandGenerationImages())
-//                 );
-//               },
-//               child: Text('이미지 수정 마치기'),
-//             ),
-//           ),
-//       ],
-//     );
-//   }
-// }
