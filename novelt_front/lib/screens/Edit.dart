@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:novelt_front/screens/SelectScene.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+// 장면 번호랑 자막
+
 class Edit extends StatefulWidget {
   const Edit({super.key});
 

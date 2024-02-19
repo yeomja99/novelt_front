@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:novelt_front/screens/InputPrompt.dart';
+import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'Navigation.dart';
 
 
@@ -12,6 +14,60 @@ class LoginSignupScreen extends StatefulWidget {
 }
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
+  // 자동 로그인 여부
+  bool switchValue = false;
+
+  // 로그인 아이디와 비밀번호 정보
+  final TextEditingController userIdController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  Future<void> _login() async {
+    final response = await http.post(
+      Uri.parse('http://your_server_ip:8000/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'userid': userIdController.text,
+        'password': passwordController.text,
+      })
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['success']) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Navigation()));
+        print("Login successful");
+      }
+    } else {
+      // 로그인 실패 처리
+      print("Login failed");
+    }
+  }
+  // 회원가입 유저 네임, 이메일, 비밀번호 정보
+  final TextEditingController SignUpuserNameController = TextEditingController();
+  final TextEditingController SignUpuserIdController = TextEditingController();
+  final TextEditingController SignUppasswordController = TextEditingController();
+  Future<void> _signup() async {
+    final response = await http.post(
+      Uri.parse('http://your_server_ip:8000/signup'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'username': SignUpuserNameController.text,
+        'password': SignUpuserIdController.text,
+        'userid': SignUpuserIdController.text
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data['success']) {
+        // 회원가입 성공 처리
+        isSignupScreen = false;
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Navigation()));
+        print("Signup successful");
+      }
+    } else {
+      // 회원가입 실패 처리
+      print("Signup failed");
+    }
+  }
   bool isSignupScreen = true;
   @override
   Widget build(BuildContext context) {
@@ -25,10 +81,6 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             left: 0,
             child: Container(
               height: 300,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('image/red.jpg'), fit: BoxFit.fill),
-              ),
               child: Container(
                 padding: EdgeInsets.only(top: 50, left: 157),
                 child: Column(
@@ -139,6 +191,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                         child: Column(
                           children: [
                             TextFormField(
+                              controller: SignUpuserNameController,
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.account_circle,
@@ -167,6 +220,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               height: 8,
                             ),
                             TextFormField(
+                              controller: SignUpuserIdController,
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.email,
@@ -195,6 +249,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               height: 8,
                             ),
                             TextFormField(
+                              controller: SignUppasswordController,
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.lock,
@@ -218,7 +273,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   hintStyle: TextStyle(
                                       fontSize: 14, color: Color(0xFF737379)),
                                   contentPadding: EdgeInsets.all(10)),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -230,6 +285,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                         child: Column(
                           children: [
                             TextFormField(
+                              controller: userIdController,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.email,
@@ -257,6 +313,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               height: 8,
                             ),
                             TextFormField(
+                              controller: passwordController,
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
                                     Icons.lock,
@@ -303,11 +360,15 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 width: 100,
 
                 child: GestureDetector(
-                  onTap:(){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Navigation()),
-                    );
+                  onTap: () {
+                    // 여기에서 ClickShorts 페이지로 네비게이션 합니다.
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Navigation()));
+                    if (isSignupScreen){
+                      _signup();
+                    }
+                    else{
+                      _login();
+                    }
                   },
                   child: Container(
                     // 여기에서 페이지 이동 함수 구현
