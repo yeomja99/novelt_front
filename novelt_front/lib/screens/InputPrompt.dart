@@ -27,38 +27,57 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
       String emphasis,) async {
     // FastAPI 서버의 엔드포인트 URL
     var url = Uri.parse('http://your-fastapi-server.com/characters');
+    // 필터링된 캐릭터 정보를 담을 리스트
+    List<Map<String, dynamic>> filteredCharacters = [];
 
-    // null 값 검사
-    Future<void> _submitData() async {
-      if (!_formKey.currentState!.validate()) {
-        // 폼이 유효하지 않으면 함수를 종료합니다.
-        return;
-      }
-      _formKey.currentState!.save();
+    // Null 값이 아닌 필드만을 포함하도록 캐릭터 정보 필터링
+    for (var character in characters) {
+      Map<String, dynamic> characterData = {};
 
-      // POST 요청에 담을 데이터
-      var data = {
-        'title': title!,
-        'genre': genre!,
-        'story': story!,
-        'emphasis': emphasis,
-        'characters': characters.map((character) => character.toJson())
-            .toList(),
-        // 기타 필드들...
-      };
-      print("data: $data");
-      // HTTP POST 요청 보내기
-      var response = await http.post(url,
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(data));
+      // Null이 아닌 필드만 추가
+      if (character.name.isNotEmpty) characterData['이름'] = character.name;
+      if (character.age.isNotEmpty) characterData['나이'] = character.age;
+      if (character.gender.isNotEmpty) characterData['성별'] = character.gender;
+      if (character.personality.isNotEmpty) characterData['성격'] = character.personality;
+      if (character.hairstyle.isNotEmpty) characterData['헤어스타일'] = character.hairstyle;
+      if (character.clothes.isNotEmpty) characterData['의상'] = character.clothes;
+      if (character.appearance.isNotEmpty) characterData['의향'] = character.appearance;
 
-      if (response.statusCode == 200) {
-        print('Data successfully sent to the server');
-      } else {
-        print('Failed to send data');
-      }
+      // 캐릭터 데이터가 비어있지 않다면 리스트에 추가
+      if (characterData.isNotEmpty) filteredCharacters.add(characterData);
+    }
+    // POST 요청에 담을 데이터
+    var data = {
+      'novel':{
+      '제목': title!,
+      '장르': genre!,
+      '강조요소': emphasis,
+      '줄거리': story!},
+      'characters': filteredCharacters
+      // 'characters': characters.skip(1).map((character) => character.toJson())
+      //     .toList(),
+      // 기타 필드들...
+    };
+    print("Data: $data");
+
+    // HTTP POST 요청 보내기
+    var response = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(data));
+    if (response.statusCode == 200) {
+      print('Data successfully sent to the server');
+    } else {
+      print('Failed to send data');
     }
   }
+    // null 값 검사
+  Future<void> _submitData() async {
+    if (!_formKey.currentState!.validate()) {
+      // 폼이 유효하지 않으면 함수를 종료합니다.
+      return;
+    }
+    _formKey.currentState!.save();
+}
 
   late TabController _tabController1;
   int _selectedIndex1 = 1;
@@ -69,7 +88,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
   final TextEditingController emphasisController = TextEditingController();
   final TextEditingController charactername = TextEditingController(); // 필수
   final TextEditingController characterage = TextEditingController(); // 필수
-  late String charactergender;
+  String? charactergender;
   final TextEditingController characterpersonality = TextEditingController(); // 필수
   final TextEditingController characterhairstyle = TextEditingController();
   final TextEditingController characterclothes = TextEditingController();
@@ -86,7 +105,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
     final newCharacter = ChracterInfo(
       name: charactername.text!,
       age: characterage.text!,
-      gender: charactergender,
+      gender: charactergender ?? "",
       personality: characterpersonality.text!,
       hairstyle: characterhairstyle.text,
       clothes: characterclothes.text,
@@ -97,6 +116,14 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
     setState(() {
       Characters.add(newCharacter);
     });
+
+    // 캐릭터를 추가한 후, 컨트롤러를 초기화하여 다음 입력을 준비합니다.
+    charactername.clear();
+    characterage.clear();
+    characterpersonality.clear();
+    characterhairstyle.clear();
+    characterclothes.clear();
+    characterappearance.clear();
   }
   Widget _createCharacterForm(){
     return Container(
@@ -153,6 +180,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                       return '등장인물의 나이는 반드시 입력해야 합니다.';
                     }
                   },
+                  controller: characterage,
                   decoration: InputDecoration(
                     labelText: '나이',
                     labelStyle: TextStyle(color: Colors.black54),
@@ -180,7 +208,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                   }).toList(),
                   onChanged: (value) {
                     setState(() {
-                      charactergender = value??"";
+                      charactergender = value ?? "";
                     });
                   },
                 ),
@@ -194,6 +222,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                 return '등장인물의 성격은 반드시 입력해야 합니다.';
               }
             },
+            controller: characterpersonality,
             decoration: InputDecoration(
               labelText: '성격',
               labelStyle: TextStyle(color: Colors.black54),
@@ -205,6 +234,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
           ),
           SizedBox(height: 15),
           TextFormField(
+            controller: characterhairstyle,
             decoration: InputDecoration(
               labelText: '헤어',
               labelStyle: TextStyle(color: Colors.black54),
@@ -216,6 +246,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
           ),
           SizedBox(height: 15),
           TextFormField(
+            controller: characterclothes,
             decoration: InputDecoration(
               labelText: '의상',
               labelStyle: TextStyle(color: Colors.black54),
@@ -232,6 +263,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                 return '등장인물의 외형은 반드시 입력해야 합니다.';
               }
             },
+            controller: characterappearance,
             decoration: InputDecoration(
               labelText: '외형',
               labelStyle: TextStyle(color: Colors.black54),
@@ -550,6 +582,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                               genreController,
                               storyController.text,
                               emphasisController.text);
+                          _submitData();
                           // LoadingScreen으로 네비게이션
                           Navigator.push(
                             context,

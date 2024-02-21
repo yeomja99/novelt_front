@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:novelt_front/screens/InputPrompt.dart';
 import 'package:novelt_front/screens/MyPage.dart';
 
 import 'GalleryVideo.dart';
 import 'ShowGalleryImages.dart';
+import 'package:http/http.dart' as http;
+
 
 
 class GalleryImage extends StatefulWidget {
@@ -14,10 +18,10 @@ class GalleryImage extends StatefulWidget {
 }
 
 class CardImage {
-  final AssetImage topLeft;
-  final AssetImage topRight;
-  final AssetImage bottomLeft;
-  final AssetImage bottomRight;
+  final String topLeft;
+  final String topRight;
+  final String bottomLeft;
+  final String bottomRight;
   final String title;
 
   CardImage({
@@ -35,42 +39,50 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
   late TabController _tabController2;
   int _selectedIndex = 0;
 
+  List<CardImage> cardImages = [];
+
   @override
   void initState() {
     super.initState();
+    _fetchArtWorks();
   }
+  Future<void> _fetchArtWorks() async {
+    const String apiUrl = 'https://your-api-url.com/artworks'; // 백엔드 API 엔드포인트 URL
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
 
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        List<CardImage> tempImages = [];
+        for (var item in data) {
+          String title = item[0];
+          List<String> images = List<String>.from(item[1]);
+          // 이미지 리스트가 4개 미만일 경우 나머지는 첫 번째 이미지로 채웁니다.
+          while (images.length < 4) {
+            images.add(images[0]);
+          }
+          tempImages.add(CardImage(
+            title: title,
+            topLeft:(images[0]),
+            topRight: (images[1]),
+            bottomLeft: (images[2]),
+            bottomRight: (images[3]),
+          ));
+        }
+        setState(() {
+          cardImages = tempImages;
+        });
+      } else {
+        print('Failed to load artworks');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
   @override
   void dispose() {
-    // _tabController2.dispose();
     super.dispose();
   }
-  // 위의 CardImage 리스트로 대체합니다.
-  List<CardImage> imageCards = [
-    CardImage(
-      topLeft: AssetImage('images/1.png'),
-      topRight: AssetImage('images/2.png'),
-      bottomLeft: AssetImage('images/3.png'),
-      bottomRight: AssetImage('images/4.png'),
-      title: '내 남편과 결혼해줘',
-    ),
-    CardImage(
-      topLeft: AssetImage('images/5.png'),
-      topRight: AssetImage('images/6.png'),
-      bottomLeft: AssetImage('images/7.png'),
-      bottomRight: AssetImage('images/8.png'),
-      title: '사내맞선',
-    ),
-    CardImage(
-      topLeft: AssetImage('images/9.png'),
-      topRight: AssetImage('images/10.png'),
-      bottomLeft: AssetImage('images/11.png'),
-      bottomRight: AssetImage('images/12.png'),
-      title: '재벌집 막내아들',
-    ),
-
-    // ... 추가 카드 데이터
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -89,15 +101,15 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
                 mainAxisSpacing: 10,
                 childAspectRatio: 1 / 1.2,
               ),
-              itemCount: imageCards.length,
+              itemCount: cardImages.length,
               itemBuilder: (BuildContext context, int index) {
-                final card = imageCards[index];
+                final card = cardImages[index];
                 return GestureDetector( // Wrap the card in GestureDetector
                     onTap: () {
                   // Navigate to ShowGalleryImages when the card is tapped
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ShowGalleryImages()), // Pass the selected card data to the ShowGalleryImages page
+                    MaterialPageRoute(builder: (context) => ShowGalleryImages(title: card.title)), // Pass the selected card data to the ShowGalleryImages page
                   );
                 },
                 child: Column(
@@ -109,7 +121,7 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
                         onTap: () {
                           // 여기서 탭 이벤트 처리를 합니다. 예를 들어, DetailPage로 이동
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ShowGalleryImages(), // DetailPage는 구현해야 할 새로운 페이지입니다.
+                            builder: (context) => ShowGalleryImages(title: card.title), // DetailPage는 구현해야 할 새로운 페이지입니다.
                           ));
                         },
                         child: Card(
@@ -123,16 +135,16 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
                               Expanded(
                                 child: Row(
                                   children: <Widget>[
-                                    Expanded(child: Image(image: card.topLeft, fit: BoxFit.cover)),
-                                    Expanded(child: Image(image: card.topRight, fit: BoxFit.cover)),
+                                    Expanded(child: Image.network(card.topLeft, fit: BoxFit.cover)),
+                                    Expanded(child: Image.network(card.topRight, fit: BoxFit.cover)),
                                   ],
                                 ),
                               ),
                               Expanded(
                                 child: Row(
                                   children: <Widget>[
-                                    Expanded(child: Image(image: card.bottomLeft, fit: BoxFit.cover)),
-                                    Expanded(child: Image(image: card.bottomRight, fit: BoxFit.cover)),
+                                    Expanded(child: Image.network(card.bottomLeft, fit: BoxFit.cover)),
+                                    Expanded(child: Image.network(card.bottomRight, fit: BoxFit.cover)),
                                   ],
                                 ),
                               ),

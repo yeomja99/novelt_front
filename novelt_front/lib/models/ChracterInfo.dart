@@ -22,13 +22,13 @@ class ChracterInfo{
         appearance = json['appearance'];
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'age': age,
-      'gender': gender,
-      'personality': personality,
-      'hairstyle': hairstyle,
-      'clothes': clothes,
-      'appearance': appearance,
+      '이름': name,
+      '나이': age,
+      '성별': gender,
+      '성격': personality,
+      '헤어스타일': hairstyle,
+      '옷': clothes,
+      '외형': appearance,
     };
   }
 }

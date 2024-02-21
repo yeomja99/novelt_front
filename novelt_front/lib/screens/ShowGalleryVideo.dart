@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
+import 'package:http/http.dart' as http;
+
 
 class ClickShorts extends StatefulWidget {
+  final String title;
+  ClickShorts({Key?key, required this.title}) : super(key:key);
+
   @override
   _ClickShortsState createState() => _ClickShortsState();
 }
@@ -16,22 +23,41 @@ class _ClickShortsState extends State<ClickShorts> {
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.asset("videos/testvideo.mp4")
-      ..initialize();
-    controller.setPlaybackSpeed(1);
-    played();
-
-    controller.addListener(() async {
-      int max = controller.value.duration.inSeconds;
-      setState(() {
-        aspectRatio = controller.value.aspectRatio;
-        position = controller.value.position;
-        progress = (position.inSeconds / max * 100).isNaN
-            ? 0
-            : position.inSeconds / max * 100;
-      });
-    });
+    fetchVideoUrl(); // 백엔드로부터 비디오 URL을 받아옵니다.
   }
+  // 백엔드로부터 비디오 URL을 받아오는 함수
+  void fetchVideoUrl() async {
+    // 백엔드 API URL (이 부분은 실제 URL로 변경해야 합니다)
+    var url = Uri.parse('https://your-api-endpoint.com/videos?title=${widget.title}');
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      var videoUrl = data['videoUrl']; // 백엔드 응답에서 비디오 URL을 추출합니다.
+
+      controller = VideoPlayerController.network(videoUrl)
+        ..initialize().then((_) {
+          // 비디오 컨트롤러 초기화 후 UI를 업데이트하기 위해 setState 호출
+          setState(() {});
+        });
+      controller.setPlaybackSpeed(1);
+      played();
+
+      controller.addListener(() async {
+        int max = controller.value.duration.inSeconds;
+        setState(() {
+          aspectRatio = controller.value.aspectRatio;
+          position = controller.value.position;
+          progress = (position.inSeconds / max * 100).isNaN
+              ? 0
+              : position.inSeconds / max * 100;
+        });
+      });
+    } else {
+      print('Failed to fetch video URL');
+    }
+  }
+
 
   void played() => controller.play();
 

@@ -21,17 +21,24 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   final TextEditingController userIdController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   Future<void> _login() async {
+    print("login");
+    print(userIdController.text.runtimeType);
+    print(passwordController.text.runtimeType);
     final response = await http.post(
-      Uri.parse('http://your_server_ip:8000/login'),
+      Uri.parse('http://172.23.252.132:8000/login/'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'userid': userIdController.text,
-        'password': passwordController.text,
+        'email': userIdController.text,
+        'pw': passwordController.text,
       })
     );
+    // print( userIdController.text.runtimeType);
+    // print( passwordController.text.runtimeType);
+    // print("response ${response.body}");
+    // print("responsecode ${response.statusCode}");
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      if (data['success']) {
+      if (data['message'] == 'Login successful') {
         Navigator.push(context, MaterialPageRoute(builder: (context) => Navigation()));
         print("Login successful");
       }
@@ -40,6 +47,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       print("Login failed");
     }
   }
+
   // 회원가입 유저 네임, 이메일, 비밀번호 정보
   final TextEditingController SignUpuserNameController = TextEditingController();
   final TextEditingController SignUpuserIdController = TextEditingController();
@@ -346,7 +354,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
               ),
             ),
           ),
-          //텍스트 폼 필드
+          // 텍스트 폼 필드
           AnimatedPositioned(
             duration: Duration(milliseconds: 500),
             curve: Curves.easeIn,
@@ -358,7 +366,6 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                 padding: EdgeInsets.all(15),
                 height: 100,
                 width: 100,
-
                 child: GestureDetector(
                   onTap: () {
                     // 여기에서 ClickShorts 페이지로 네비게이션 합니다.
@@ -396,7 +403,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
               ),
             ),
           ),
-          //전송버튼
+
+          // 전송버튼
           Positioned(
               top: MediaQuery.of(context).size.height - 145,
               right: 0,
