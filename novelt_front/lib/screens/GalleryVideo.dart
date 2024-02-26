@@ -1,23 +1,35 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:novelt_front/services/ApiService.dart';
 
 import 'ShowGalleryVideo.dart';
 import 'GalleryImage.dart';
 import 'InputPrompt.dart';
 import 'package:http/http.dart' as http;
 
-// 데이터 모델
-class thumbnail {
+
+class GalleryVideo extends StatefulWidget {
+  final bool isCreateShortform; // 이 변수를 추가합니다.
+  GalleryVideo({Key? key, this.isCreateShortform = false}) : super(key: key); // 기본값을 false로 설정
+
+  @override
+  _GalleryVideoState createState() => _GalleryVideoState();
+}
+class NovelThumnail {
+  final int novelId;
   final String title;
   final String imageUrl;
 
-  thumbnail({required this.title, required this.imageUrl});
-}
+  NovelThumnail({required this.novelId, required this.title, required this.imageUrl});
 
-class GalleryVideo extends StatefulWidget {
-  @override
-  _GalleryVideoState createState() => _GalleryVideoState();
+  factory NovelThumnail.fromJson(Map<String, dynamic> json) {
+    return NovelThumnail(
+      novelId: json['novel_id'] as int,
+      title: json['title'],
+      imageUrl: json['image_url'],
+    );
+  }
 }
 
 class _GalleryVideoState extends State<GalleryVideo> with TickerProviderStateMixin {
@@ -25,34 +37,40 @@ class _GalleryVideoState extends State<GalleryVideo> with TickerProviderStateMix
   late TabController _tabController2;
   int _selectedIndex1 = 0;
   int _selectedIndex2 = 1;
-  List<thumbnail> thumnails = []; // 작품 데이터를 저장할 리스트
+  List<NovelThumnail> thumnails = []; // 작품 데이터를 저장할 리스트
 
   @override
   void initState() {
     super.initState();
     _fetchthumnail();
   }
-
-  Future<void> _fetchthumnail() async {
-    const String apiUrl = 'https://your-backend-api.com/artworks'; // 백엔드 API URL 변경 필요
+  Future<NovelThumnail?> _fetchthumnail() async {
+    print("_fetchthumnail");
+    const String apiUrl = baseUrl + 'video_gallery/'; // 백엔드 API 엔드포인트 URL로 변경
     try {
-      final response = await http.get(Uri.parse(apiUrl));
+      final response = await http.get(
+        Uri.parse(apiUrl),
+      );
+      print("response data: ${response.body}");
+
       if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body);
+        print("response data: ${response.body}");
+        List<dynamic> jsonResponse = json.decode(response.body);
+        List<NovelThumnail> loadedNovelThumnails = jsonResponse.map((item) =>
+            NovelThumnail.fromJson(item)).toList();
+
         setState(() {
-          thumnails = data.map((item) => thumbnail(
-            title: item[0],
-            imageUrl: item[1],
-          )).toList();
+          thumnails = loadedNovelThumnails;
+          print("thumnails: ${thumnails}");
+
         });
-      } else {
-        print('Failed to load artworks.');
+      }else {
+        print('Failed to load artworks');
       }
     } catch (e) {
-      print(e);
+      print('Error: $e');
     }
   }
-
 
 
   @override
@@ -77,10 +95,10 @@ class _GalleryVideoState extends State<GalleryVideo> with TickerProviderStateMix
                 return InkWell(
                   onTap: () {
                     // 여기에서 ClickShorts 페이지로 네비게이션 합니다.
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ClickShorts(title: thumnails[index].title)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ClickShorts(novelid: thumnails[index].novelId)));
                   },
                   child: Image.network(
-                    thumnails[index].imageUrl,
+                    baseUrl + thumnails[index].imageUrl,
                     fit: BoxFit.cover,
                   ),
                 );

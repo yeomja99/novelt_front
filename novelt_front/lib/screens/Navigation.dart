@@ -7,6 +7,7 @@ import 'package:novelt_front/screens/InputPrompt.dart';
 
 
 class Navigation extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,8 +18,8 @@ class Navigation extends StatelessWidget {
 
 class NavigationPage extends StatefulWidget {
   final int initialIndex;
-
-  NavigationPage({this.initialIndex = 0});
+  final bool isCreateShortform;
+  NavigationPage({Key? key, this.initialIndex = 0, this.isCreateShortform = false}) : super(key: key);
   @override
   _NavigationPageState createState() => _NavigationPageState();
 }
@@ -31,6 +32,12 @@ class _NavigationPageState extends State<NavigationPage> {
     InputPrompt(),
     MyPage(),
   ];
+  @override
+  void initState() {
+    super.initState();
+    // 여기에서 isCreateShortform 값을 출력합니다.
+    print("isCreateShortform: ${widget.isCreateShortform}");
+  }
 
   void _onItemTapped(int index) {
     setState(() {

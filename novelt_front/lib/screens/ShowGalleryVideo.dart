@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:novelt_front/services/ApiService.dart';
 import 'package:video_player/video_player.dart';
 import 'package:http/http.dart' as http;
 
 
 class ClickShorts extends StatefulWidget {
-  final String title;
-  ClickShorts({Key?key, required this.title}) : super(key:key);
+  final int novelid;
+  ClickShorts({Key?key, required this.novelid}) : super(key:key);
 
   @override
   _ClickShortsState createState() => _ClickShortsState();
@@ -27,34 +28,45 @@ class _ClickShortsState extends State<ClickShorts> {
   }
   // 백엔드로부터 비디오 URL을 받아오는 함수
   void fetchVideoUrl() async {
-    // 백엔드 API URL (이 부분은 실제 URL로 변경해야 합니다)
-    var url = Uri.parse('https://your-api-endpoint.com/videos?title=${widget.title}');
-    var response = await http.get(url);
+    // 백엔드 API URL
+    var url = Uri.parse(baseUrl + 'video_gallery/'+widget.novelid.toString());
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      var videoUrl = data['videoUrl']; // 백엔드 응답에서 비디오 URL을 추출합니다.
+    try {
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        var videoUrl = data['video_url']; // 백엔드 응답에서 비디오 URL을 추출합니다.
+        print("gg ${baseUrl + videoUrl}");
+        // controller = VideoPlayerController.network(baseUrl + "videos/rich_makne.mp4")
+        controller = VideoPlayerController.networkUrl(Uri.parse(baseUrl+videoUrl))
+          ..initialize().then((_) {
+            setState(() {});
+          })..addListener(() {
+            final error = controller.value.errorDescription;
+            if (error != null) {
+              print("Video player error: $error");
+            }
+          });
+        controller.setPlaybackSpeed(1);
+        played();
 
-      controller = VideoPlayerController.network(videoUrl)
-        ..initialize().then((_) {
-          // 비디오 컨트롤러 초기화 후 UI를 업데이트하기 위해 setState 호출
-          setState(() {});
+        controller.addListener(() async {
+          int max = controller.value.duration.inSeconds;
+          setState(() {
+            aspectRatio = controller.value.aspectRatio;
+            position = controller.value.position;
+            progress = (position.inSeconds / max * 100).isNaN
+                ? 0
+                : position.inSeconds / max * 100;
+          });
         });
-      controller.setPlaybackSpeed(1);
-      played();
-
-      controller.addListener(() async {
-        int max = controller.value.duration.inSeconds;
-        setState(() {
-          aspectRatio = controller.value.aspectRatio;
-          position = controller.value.position;
-          progress = (position.inSeconds / max * 100).isNaN
-              ? 0
-              : position.inSeconds / max * 100;
-        });
-      });
-    } else {
-      print('Failed to fetch video URL');
+      } else {
+        // 오류 처리: 응답 상태 코드가 200이 아닐 때
+        print('Failed to fetch video URL: ${response.statusCode}');
+      }
+    } catch (e) {
+      // HTTP 요청 실패 또는 다른 예외 처리
+      print('Exception caught while fetching video URL: $e');
     }
   }
 

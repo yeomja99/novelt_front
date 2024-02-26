@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:novelt_front/services/ApiService.dart';
 import 'Navigation.dart';
 
 
@@ -25,7 +26,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     print(userIdController.text.runtimeType);
     print(passwordController.text.runtimeType);
     final response = await http.post(
-      Uri.parse('http://172.23.252.132:8000/login/'),
+      Uri.parse(baseUrl  + 'login/'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'email': userIdController.text,
@@ -54,7 +55,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   final TextEditingController SignUppasswordController = TextEditingController();
   Future<void> _signup() async {
     final response = await http.post(
-      Uri.parse('http://your_server_ip:8000/signup'),
+      Uri.parse(baseUrl + 'signup/'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'username': SignUpuserNameController.text,

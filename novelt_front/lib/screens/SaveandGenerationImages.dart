@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:novelt_front/screens/FinishShorts.dart';
 import 'package:novelt_front/screens/ShowGalleryImages.dart';
 
 import 'AppController.dart';
@@ -12,7 +13,9 @@ import 'package:http/http.dart' as http;
 
 
 class SaveandGenerationImages extends StatefulWidget {
-  SaveandGenerationImages({super.key});
+  final int novelId; // 여기에 novelId를 추가합니다.
+
+  SaveandGenerationImages({Key? key, required this.novelId}) : super(key: key);
 
   @override
   State<SaveandGenerationImages> createState() => _SaveandGenerationImagesState();
@@ -155,10 +158,12 @@ class _SaveandGenerationImagesState extends State<SaveandGenerationImages> {
                     SizedBox(height: 10,),
                     ElevatedButton(
                         onPressed: () {
-                          callVideoSaveAPI();
-                          AppController().setSelectedIndex(0); // `GalleryPage`가 있는 메인 네비게이션 인덱스
-                          AppController().setGalleryTabIndex(1); // `GalleryVideo` 탭 인덱스
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => NavigationPage()));
+                          // callVideoSaveAPI();
+                          // AppController().setSelectedIndex(0); // `GalleryPage`가 있는 메인 네비게이션 인덱스
+                          // AppController().setGalleryTabIndex(1); // `GalleryVideo` 탭 인덱스
+                          // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => NavigationPage(isCreateShortform:true)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => FinishShorts(novelid: 1)));
+
                         },
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size(340, 55),

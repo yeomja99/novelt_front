@@ -1,5 +1,5 @@
 class ChracterInfo{
-  final String name, age, gender, personality, hairstyle, clothes, appearance;
+  final String name, age, gender, personality, hairstyle, clothes, appearance, imgurl;
 
   ChracterInfo({
     required this.name, // 필수
@@ -8,7 +8,8 @@ class ChracterInfo{
     required this.personality, // 필수
     required this.hairstyle,
     required this.clothes,
-    required this.appearance // 필수
+    required this.appearance, // 필수
+    this.imgurl=""
   });
 
   // json 형식으로 넘겨받을 경우
@@ -19,7 +20,8 @@ class ChracterInfo{
         personality = json['personality'],
         hairstyle = json['hairstyle'],
         clothes = json['clothes'],
-        appearance = json['appearance'];
+        appearance = json['appearance'],
+        imgurl = json['imgurl'];
   Map<String, dynamic> toJson() {
     return {
       '이름': name,
@@ -29,6 +31,7 @@ class ChracterInfo{
       '헤어스타일': hairstyle,
       '옷': clothes,
       '외형': appearance,
+      'img':imgurl,
     };
   }
 }

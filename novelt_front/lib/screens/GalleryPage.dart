@@ -8,8 +8,8 @@ import 'ShowGalleryVideo.dart';
 
 class GalleryPage extends StatefulWidget {
   final int initialIndex;
-
-  GalleryPage({this.initialIndex = 0});
+  bool isCreateShortform;
+  GalleryPage({Key? key, this.initialIndex = 0, this.isCreateShortform = false}) : super(key: key);
 
   @override
   _GalleryPageState createState() => _GalleryPageState();

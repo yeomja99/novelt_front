@@ -1,14 +1,49 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:novelt_front/screens/SelectScene.dart';
+import 'package:novelt_front/services/ApiService.dart';
 
 import '../models/ChracterInfo.dart';
+import '../models/novel_data.dart';
 import 'GalleryImage.dart';
 import 'LoadingScreen.dart';
 import 'MyPage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+class NovelData {
+  final int novelId;
+  final List<SceneData> noveldata;
+
+  NovelData({required this.novelId, required this.noveldata});
+
+  factory NovelData.fromJson(Map<String, dynamic> json) {
+    var list = json['noveldata'] as List;
+    List<SceneData> novelDataList = list.map((i) => SceneData.fromJson(i)).toList();
+
+    return NovelData(
+      novelId: json['novel_id'],
+      noveldata: novelDataList,
+    );
+  }
+}
+
+class SceneData {
+  final String subtitle;
+  final int sceneNumber;
+  final List<String> imgUrls;
+
+  SceneData({required this.subtitle, required this.sceneNumber, required this.imgUrls});
+
+  factory SceneData.fromJson(List<dynamic> json) {
+    List<String> imgUrls = List<String>.from(json[2]);
+    return SceneData(
+      subtitle: json[0],
+      sceneNumber: json[1],
+      imgUrls: imgUrls,
+    );
+  }
+}
 
 class InputPrompt extends StatefulWidget {
   InputPrompt({Key? key}) : super(key: key);
@@ -19,14 +54,14 @@ class InputPrompt extends StatefulWidget {
 class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Future<void> sendCharacterData(
+  Future<SelectNovelData?> sendCharacterData(
       List<ChracterInfo> characters,
       String title,
       String genre,
       String story,
       String emphasis,) async {
     // FastAPI 서버의 엔드포인트 URL
-    var url = Uri.parse('http://your-fastapi-server.com/characters');
+    var url = Uri.parse(baseUrl + 'novel/');
     // 필터링된 캐릭터 정보를 담을 리스트
     List<Map<String, dynamic>> filteredCharacters = [];
 
@@ -42,6 +77,8 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
       if (character.hairstyle.isNotEmpty) characterData['헤어스타일'] = character.hairstyle;
       if (character.clothes.isNotEmpty) characterData['의상'] = character.clothes;
       if (character.appearance.isNotEmpty) characterData['의향'] = character.appearance;
+      if (character.appearance.isNotEmpty) characterData['img'] = character.imgurl;
+
 
       // 캐릭터 데이터가 비어있지 않다면 리스트에 추가
       if (characterData.isNotEmpty) filteredCharacters.add(characterData);
@@ -54,9 +91,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
       '강조요소': emphasis,
       '줄거리': story!},
       'characters': filteredCharacters
-      // 'characters': characters.skip(1).map((character) => character.toJson())
-      //     .toList(),
-      // 기타 필드들...
+
     };
     print("Data: $data");
 
@@ -64,10 +99,19 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
     var response = await http.post(url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data));
+    var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(decodedResponse);
+      SelectNovelData selectnovelData = SelectNovelData.fromJson(jsonResponse);
+      print('Novel ID: ${selectnovelData.novelId}');
+      for (var sceneData in selectnovelData.novelData) {
+        print('Subtitle: ${sceneData.subtitle}, Scene Number: ${sceneData.sceneNumber}, Image URLs: ${sceneData.imageUrls}');
+      }
       print('Data successfully sent to the server');
+      return selectnovelData;
     } else {
       print('Failed to send data');
+      return null;
     }
   }
     // null 값 검사
@@ -93,6 +137,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
   final TextEditingController characterhairstyle = TextEditingController();
   final TextEditingController characterclothes = TextEditingController();
   final TextEditingController characterappearance = TextEditingController(); // 필수
+  final TextEditingController characterimgurl = TextEditingController();
 
   List<ChracterInfo> Characters = [];
 
@@ -110,6 +155,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
       hairstyle: characterhairstyle.text,
       clothes: characterclothes.text,
       appearance: characterappearance.text!,
+      imgurl: characterimgurl.text,
     );
 
     // 리스트에 추가하고 상태 업데이트
@@ -273,7 +319,19 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
               contentPadding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 20.0),
             ),
           ),
-        SizedBox(height: 20,)],
+        SizedBox(height: 20,),
+          TextFormField(
+            controller: characterimgurl,
+            decoration: InputDecoration(
+              labelText: '참고할 등장인물 이미지 url',
+              labelStyle: TextStyle(color: Colors.black54),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 18.0, horizontal: 20.0),
+            ),
+          ),
+        ],
       ),
     );
 
@@ -575,23 +633,30 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                         ),
                         elevation: 3, // 그림자 깊이 설정
                       ),
-                      onPressed: () {
+                      onPressed: ()async {
                         if (_formKey.currentState!.validate()){
-                          sendCharacterData(Characters,
+                          SelectNovelData? selectnovelData = await sendCharacterData(Characters,
                               titleController.text,
                               genreController,
                               storyController.text,
                               emphasisController.text);
                           _submitData();
-                          // LoadingScreen으로 네비게이션
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => SelectScene()),
-                          );
-                        }else{
-                          print( "필수 입력을 완료해주세요.");
-                        };
-                        // 버튼이 눌렸을 때 실행할 기능
+                          if (selectnovelData != null) {
+                            print("novel Data is here");
+                            // novelData가 성공적으로 받아진 경우, SelectScene으로 네비게이션하면서 novelData 전달
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SelectScene(novelData: selectnovelData),
+                              ),
+                            );
+                          } else {
+                            // 서버로부터 응답이 null인 경우(오류 발생), 적절한 오류 처리 수행
+                            print("Failed to load novel data");
+                          }
+                        } else {
+                          print("Form validation failed");
+                        }
                       },
                       child: Text('제출하기'), // 버튼 텍스트 설정
                     ),
