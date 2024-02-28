@@ -122,6 +122,7 @@ class _GalleryImageState extends State<GalleryImage> with TickerProviderStateMix
               itemCount: cardImages.length,
               itemBuilder: (BuildContext context, int index) {
                 final card = cardImages[index];
+                print("card:${card}");
                 return Container( // Wrap the card in GestureDetector
                 //     onTap: () {
                 //   // Navigate to ShowGalleryImages when the card is tapped

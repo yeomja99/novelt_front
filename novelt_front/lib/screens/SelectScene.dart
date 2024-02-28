@@ -20,18 +20,36 @@ class SelectScene extends StatefulWidget {
 
 }
 
+class PageState {
+  bool isSaved;
+  String selectedImageUrl;
+  String editsubtitle;
+
+  PageState({this.isSaved = false, this.selectedImageUrl = '', this.editsubtitle=""});
+}
 
 class _SelectSceneState extends State<SelectScene> {
   final PageController _pageController = PageController(viewportFraction: 0.8);
   int _currentPageIndex = 0;
   bool _isSaveCompleted = false;
   String _updatedImageUrl = '';
+  List<PageState> _pageStates = [];
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pageStates = List.generate(widget.novelData.novelData.length, (_) => PageState());
+
+  }
   @override
   void dispose() {
     _pageController.dispose(); // 컨트롤러 해제
     super.dispose();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -98,62 +116,112 @@ class _SelectSceneState extends State<SelectScene> {
                   );
                 } else {
                   // 마지막 페이지가 아닐 경우 기존 로직 실행 (이미지 표시)
-                  final page = pages[index]; // 현재 페이지(장면)의 데이터를 가져옵니다.
-                  return Container(
-                    padding: EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '장면 번호: ${index+1}',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          '장면 설명: ${page.subtitle}',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 8),
+                  var page = pages[index]; // 현재 페이지(장면)의 데이터를 가져옵니다.
+                  final pageState = _pageStates[index];
+                  print("yyyyyy${_pageStates[index].isSaved}");
+                  if (pageState.isSaved){
+                    return Center(
+                      child: Column(
+                        children: [
+                          Container(child: Column(
+                            children: [
+                              Text(
+                                '장면 번호: ${index + 1}',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '장면 설명: ${page.subtitle}',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )
+                            ,),
+
                         Expanded(
-                          child: GridView.builder(
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // 한 줄에 표시할 이미지 수
-                              childAspectRatio: 1, // 이미지의 가로 세로 비율
-                            ),
-                            // itemCount: page.imageUrls.length,
-                            itemCount: 4,
-                            itemBuilder: (context, imgIndex) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Edit(
-                                        imgindex: imgIndex,
-                                        sceneNumber: page.sceneNumber,
-                                        sceneSubtitle: page.subtitle,
-                                        imageUrl: page.imageUrls[imgIndex],
-                                        novelId: widget.novelData.novelId,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Image.network(
-                                      page.imageUrls[imgIndex].startsWith('http')
-                                          ? page.imageUrls[imgIndex]
-                                          : baseUrl + page.imageUrls[imgIndex],
-                                      fit: BoxFit.cover),
-                                ),
-                              );
-                            },
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
+                          child: Image.network(
+                            _pageStates[index].selectedImageUrl.startsWith('http')
+                                ?_pageStates[index].selectedImageUrl
+                            : baseUrl+_pageStates[index].selectedImageUrl,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ],
-                    ),
-                  );
+                      ),
+                    );
+                  }else {
+                    return Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '장면 번호: ${index + 1}',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '장면 설명: ${page.subtitle}',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 8),
+                          Expanded(
+                            child: GridView.builder(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, // 한 줄에 표시할 이미지 수
+                                childAspectRatio: 1, // 이미지의 가로 세로 비율
+                              ),
+                              // itemCount: page.imageUrls.length,
+                              itemCount: 4,
+                              itemBuilder: (context, imgIndex) {
+                                return GestureDetector(
+                                  onTap:  () async {
+                                    final result = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            Edit(
+                                              imgindex: imgIndex,
+                                              sceneNumber: page.sceneNumber,
+                                              sceneSubtitle: page.subtitle,
+                                              imageUrl: page
+                                                  .imageUrls[imgIndex],
+                                              novelId: widget.novelData.novelId,
+                                            ),
+                                      ),
+                                    );
+                                    print("result: ${result.containsKey('isSaved')}");
+                                    if (result != null && result is Map) {
+                                      setState(() {
+                                        _pageStates[index].isSaved = result['isSaved'];
+                                        _pageStates[index].selectedImageUrl = result['imageUrl'];
+                                        page.subtitle = result['editSubtitle'];
+                                       print("durl: ${_pageStates[index].isSaved}");
+                                      });
+                                    }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Image.network(
+                                        page.imageUrls[imgIndex].startsWith(
+                                            'http')
+                                            ? page.imageUrls[imgIndex]
+                                            : baseUrl +
+                                            page.imageUrls[imgIndex],
+                                        fit: BoxFit.cover),
+                                  ),
+                                );
+                              },
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 }
               },
             ),

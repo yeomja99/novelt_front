@@ -16,7 +16,7 @@ class SelectNovelData {
 }
 
 class PageData {
-  final String subtitle;
+  String subtitle;
   final int sceneNumber;
   final List<String> imageUrls;
 

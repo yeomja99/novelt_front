@@ -35,7 +35,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     );
     // print( userIdController.text.runtimeType);
     // print( passwordController.text.runtimeType);
-    // print("response ${response.body}");
+    print("response ${response.body}");
     // print("responsecode ${response.statusCode}");
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

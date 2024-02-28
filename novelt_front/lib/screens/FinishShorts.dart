@@ -43,6 +43,7 @@ class _FinishShortsState extends State<FinishShorts> {
         print("response: ${response.statusCode}");
         print("response body: ${response.body}");
         print("videoUrl: ${videoUrl}");
+        print(baseUrl+videoUrl);
         controller = VideoPlayerController.networkUrl(Uri.parse(baseUrl+videoUrl))
           ..initialize().then((_) {
             setState(() {});

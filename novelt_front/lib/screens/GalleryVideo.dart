@@ -51,11 +51,13 @@ class _GalleryVideoState extends State<GalleryVideo> with TickerProviderStateMix
       final response = await http.get(
         Uri.parse(apiUrl),
       );
+      print(apiUrl);
       print("response data: ${response.body}");
 
       if (response.statusCode == 200) {
-        print("response data: ${response.body}");
-        List<dynamic> jsonResponse = json.decode(response.body);
+        var decodedResponse = utf8.decode(response.bodyBytes);
+        List<dynamic> jsonResponse = json.decode(decodedResponse);
+        print("response data: ${jsonResponse}");
         List<NovelThumnail> loadedNovelThumnails = jsonResponse.map((item) =>
             NovelThumnail.fromJson(item)).toList();
 

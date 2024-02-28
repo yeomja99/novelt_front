@@ -1,4 +1,5 @@
 import 'dart:convert';
+// import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,7 +37,7 @@ class _ClickShortsState extends State<ClickShorts> {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         var videoUrl = data['video_url']; // 백엔드 응답에서 비디오 URL을 추출합니다.
-        print("gg ${baseUrl + videoUrl}");
+        print("gg ${baseUrl + 'videos/1,mp4'}");
         // controller = VideoPlayerController.network(baseUrl + "videos/rich_makne.mp4")
         controller = VideoPlayerController.networkUrl(Uri.parse(baseUrl+videoUrl))
           ..initialize().then((_) {

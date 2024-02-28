@@ -99,6 +99,8 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
     var response = await http.post(url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data));
+    print("response: ${response.statusCode}");
+    print("response: ${response.body}");
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(decodedResponse);
@@ -481,7 +483,7 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
                         }).toList(),
                         onChanged: (String? newValue) {
                           setState(() {
-                            genreController = newValue ?? "";
+                            _selectValue = newValue ?? "";
                           });
                         },
                         style: TextStyle(color: Colors.black54, fontSize: 16), // 드롭다운 아이템 텍스트 스타일

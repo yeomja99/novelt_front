@@ -276,6 +276,8 @@ class _EditState extends State<Edit>
                       'isSaved': true,
                       'imageUrl': _imageUrl,
                       'sceneNumber': _sceneNumber,
+                      // 'editSubtitle': subtitleeditController.text,
+                      'editSubtitle':widget.sceneSubtitle,
                     });
                   },
                   style: OutlinedButton.styleFrom(
