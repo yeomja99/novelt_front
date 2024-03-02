@@ -34,46 +34,71 @@ class _FinishShortsState extends State<FinishShorts> {
     // 백엔드 API URL
     var url = Uri.parse(baseUrl + 'video/'+widget.novelid.toString());
 
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        var videoUrl = data['video_url']; // 백엔드 응답에서 비디오 URL을 추출합니다.
-        print("data: ${data}");
-        print("response: ${response.statusCode}");
-        print("response body: ${response.body}");
-        print("videoUrl: ${videoUrl}");
-        print(baseUrl+videoUrl);
-        controller = VideoPlayerController.networkUrl(Uri.parse(baseUrl+videoUrl))
-          ..initialize().then((_) {
-            setState(() {});
-          })..addListener(() {
-            final error = controller.value.errorDescription;
-            if (error != null) {
-              print("Video player error: $error");
-            }
-          });
-        controller.setPlaybackSpeed(1);
-        played();
+    // controller = VideoPlayerController.networkUrl(Uri.parse(baseUrl+'video/1.mp4'));
+    controller = VideoPlayerController.asset('videos/1.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      })..addListener(() {
+        final error = controller.value.errorDescription;
+        if (error != null) {
+          print("Video player error: $error");
+        }
+      });
+    controller.setPlaybackSpeed(1);
+    played();
 
-        controller.addListener(() async {
-          int max = controller.value.duration.inSeconds;
-          setState(() {
-            aspectRatio = controller.value.aspectRatio;
-            position = controller.value.position;
-            progress = (position.inSeconds / max * 100).isNaN
-                ? 0
-                : position.inSeconds / max * 100;
-          });
-        });
-      } else {
-        // 오류 처리: 응답 상태 코드가 200이 아닐 때
-        print('Failed to fetch video URL: ${response.statusCode}');
-      }
-    } catch (e) {
-      // HTTP 요청 실패 또는 다른 예외 처리
-      print('Exception caught while fetching video URL: $e');
-    }
+    controller.addListener(() async {
+      int max = controller.value.duration.inSeconds;
+      setState(() {
+        aspectRatio = controller.value.aspectRatio;
+        position = controller.value.position;
+        progress = (position.inSeconds / max * 100).isNaN
+            ? 0
+            : position.inSeconds / max * 100;
+      });
+    });
+
+    // try {
+    //   var response = await http.get(url);
+    //   if (response.statusCode == 200) {
+    //     var data = jsonDecode(response.body);
+    //     var videoUrl = data['video_url']; // 백엔드 응답에서 비디오 URL을 추출합니다.
+    //     print("data: ${data}");
+    //     print("response: ${response.statusCode}");
+    //     print("response body: ${response.body}");
+    //     print("videoUrl: ${videoUrl}");
+    //     print(baseUrl+videoUrl);
+    //     controller = VideoPlayerController.networkUrl(Uri.parse(baseUrl+videoUrl))
+    //     controller = VideoPlayerController.networkUrl(Uri.parse("http://172.23.252.132:8000/videos/1.mp4"))
+    //       ..initialize().then((_) {
+    //         setState(() {});
+    //       })..addListener(() {
+    //         final error = controller.value.errorDescription;
+    //         if (error != null) {
+    //           print("Video player error: $error");
+    //         }
+    //       });
+    //     controller.setPlaybackSpeed(1);
+    //     played();
+    //
+    //     controller.addListener(() async {
+    //       int max = controller.value.duration.inSeconds;
+    //       setState(() {
+    //         aspectRatio = controller.value.aspectRatio;
+    //         position = controller.value.position;
+    //         progress = (position.inSeconds / max * 100).isNaN
+    //             ? 0
+    //             : position.inSeconds / max * 100;
+    //       });
+    //     });
+    //   } else {
+    //     // 오류 처리: 응답 상태 코드가 200이 아닐 때
+    //     print('Failed to fetch video URL: ${response.statusCode}');
+    //   }
+    // } catch (e) {
+    //   // HTTP 요청 실패 또는 다른 예외 처리
+    //   print('Exception caught while fetching video URL: $e');
+    // }
   }
 
 

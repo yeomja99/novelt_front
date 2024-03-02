@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:novelt_front/screens/Edit.dart';
+import 'package:novelt_front/screens/FinishShorts.dart';
 import 'package:novelt_front/screens/GalleryImage.dart';
 import 'package:novelt_front/screens/GalleryVideo.dart';
 import 'package:novelt_front/screens/LoginSignupScreenState.dart';
@@ -10,6 +11,8 @@ import 'package:novelt_front/screens/Navigation.dart';
 import 'package:novelt_front/screens/SaveandGenerationImages.dart';
 import 'package:novelt_front/screens/SelectScene.dart';
 
+import 'package:novelt_front/screens/FinishShorts.dart';
+
 
 
 void main() => runApp(MyApp());
@@ -19,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginSignupScreen(),
+      home: Navigation(),
       // home: Edit(
       //   sceneNumber: 1,
       //   sceneSubtitle: "윤현우",

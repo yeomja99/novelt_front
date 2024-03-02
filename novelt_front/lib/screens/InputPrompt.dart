@@ -100,10 +100,10 @@ class _InputPromptState extends State<InputPrompt> with TickerProviderStateMixin
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(data));
     print("response: ${response.statusCode}");
-    print("response: ${response.body}");
     var decodedResponse = utf8.decode(response.bodyBytes);
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(decodedResponse);
+      print("response: ${jsonResponse}");
       SelectNovelData selectnovelData = SelectNovelData.fromJson(jsonResponse);
       print('Novel ID: ${selectnovelData.novelId}');
       for (var sceneData in selectnovelData.novelData) {

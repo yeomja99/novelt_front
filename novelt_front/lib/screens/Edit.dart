@@ -64,6 +64,16 @@ class _EditState extends State<Edit>
       return;
     }
 
+    if (subtitleeditController.text.isEmpty) {
+      // 텍스트가 비어있다면 경고 메시지를 표시하고 함수를 종료
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("자막을 입력해주세요."),
+        ),
+      );
+      return;
+    }
+    
     // POST 요청을 보낼 URL
     const String apiUrl = baseUrl + 'scene_image/';
     print(widget.imgindex.toInt() + 1);
@@ -209,6 +219,7 @@ class _EditState extends State<Edit>
                   child: TextField(
                     maxLength: 40,
                     controller: subtitleeditController,
+
                     style: TextStyle(color: Colors.white), // 입력 텍스트 색상을 흰색으로 설정
                     decoration: InputDecoration(
                       hintText: widget.sceneSubtitle,
